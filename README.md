@@ -6,15 +6,15 @@ Welcome to BugBounty.zip, a collection of tools aimed at making your bug hunting
 ## Tools :wrench:
 Here's a brief overview of the tools we provide:
 
-1. **Add HTTPS:** Automatically adds HTTPS to your URLs.
-2. **Remove a Word:** Helps you delete specific words from your text.
-3. **Replace a Word:** Allows you to replace specific words in your text.
+1. **Add HTTPS:** Automatically adds HTTPS to domain list.
+2. **Remove a Word:** Helps you delete specific words from your list.
+3. **Replace a Word:** Allows you to replace specific words in your list.
 4. **Remove Duplicates:** Removes duplicate entries in your list.
-5. **Extract Endpoints:** Enables you to extract endpoints from the source code.
+5. **Extract Endpoints:** Enables you to extract endpoints from your URL lists.
 6. **Extract Parameters:** Helps to extract parameters from URL strings.
 7. **Open Multiple URLs:** Opens multiple URLs at once.
 8. **OTP Generator:** A one-time password generator tool.
-9. **UltraSoundJS Scan:** Scans the input source code or JavaScript file to find endpoints , parameters and domains.
+9. **UltraSoundSource Scan:** Scans the input source code or JavaScript file to find endpoints, parameters, and domains.
 
 ## Usage :computer:
 Simply navigate to [BugBounty.zip](https://BugBounty.zip) to start using the tools.
