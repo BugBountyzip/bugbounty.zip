@@ -23,7 +23,7 @@ Simply navigate to [BugBounty.zip](https://BugBounty.zip) to start using the too
 We welcome any contributions! If you wish to contribute, please create an issue to discuss what you would like to change or improve.
 
 ## Sponsors :money_with_wings:
-Your support means a lot to us. It helps us dedicate more time to maintaining this project and continue adding valuable tools. Check out the sponsorship tiers and consider becoming a sponsor. [Become a sponsor]([your-github-sponsors-link](https://github.com/sponsors/BugBountyzip))
+Your support means a lot to us. It helps us dedicate more time to maintaining this project and continue adding valuable tools. Check out the sponsorship tiers and consider becoming a sponsor. [Become a sponsor](https://github.com/sponsors/BugBountyzip)
 
 
 
