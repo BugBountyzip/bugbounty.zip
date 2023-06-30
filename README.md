@@ -1,4 +1,4 @@
-# BugBounty.zip :beetle: :moneybag: :zipper_mouth_face:
+# BugBounty.zip :beetle: :moneybag:
 
 Welcome to BugBounty.zip, a collection of tools aimed at making your bug hunting experience smoother and more efficient.
 
