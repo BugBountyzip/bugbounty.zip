@@ -1,0 +1,174 @@
+body {
+    overflow-x: hidden;
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    --bg-color: #f2f2f2;
+    --text-color: #000;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: all 0.5s ease;
+}
+
+
+body.dark-mode {
+    --bg-color: #333;
+    --text-color: #f2f2f2;
+}
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #inputArea, #outputArea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+            resize: none;
+        }
+
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 20px;
+            border: none;
+            color: white;
+            background-color: #4CAF50;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 40px;
+        }
+		
+		.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--bg-color);
+}
+
+.icon-link {
+  color: var(--text-color);
+  margin: 0 10px;
+  font-size: 1.5em;
+  text-decoration: none;
+  transition: color 0.5s;
+}
+
+.icon-link:hover {
+  color: #007BFF;
+}
+
+.navbar {
+    width: 100%;  /* Make sure the navbar is full width */
+    background-color: #333;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    color: white;
+}
+
+.nav-item {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.nav-item a {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-item a:hover {
+    text-decoration: underline;
+}
+
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Responsive styles for screens up to 600px wide */
+@media screen and (max-width: 600px) {
+  .container {
+    width: 100%;
+  }
+
+  #inputArea, #outputArea {
+    width: 95%; /* reduce width */
+    height: 100px; /* make textareas smaller on small screens */
+  }
+  
+  .button {
+    padding: 5px 10px; /* make buttons smaller on small screens */
+    font-size: 14px; /* make buttons font smaller on small screens */
+  }
+
+  .title {
+    font-size: 24px; /* make title font smaller on small screens */
+  }
+
+  .description {
+    font-size: 16px; /* make description font smaller on small screens */
+  }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;  
+}
+
+/* Dropdown container - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 10px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+    color: black !important;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
