@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UltraSoundJS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://bugbounty.zip/css/styles.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+   <style>
+        
+
+        .textarea {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            padding: 12px 20px;
+            resize: none;
+            width: 100%;
+            height: 200px;
+        }
+
+
+
+        /* Responsive styles for screens up to 600px wide */
+        @media screen and (max-width: 600px) {
+            .container {
+                width: 100%;
+            }
+
+            .textarea {
+                height: 100px; 
+            }
+
+            .button {
+                padding: 5px 10px; 
+                font-size: 14px;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .description {
+                font-size: 16px;
+            }
+        }
+		
+		.button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+		
+		.export-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    </style>
+
+    <script>
+        function extractEndpoints() {
+    var start = performance.now();
+
+    var sourceCode = document.getElementById("sourceCode").value;
+    var endpoints = [];
+
+    // Regular expression to match URLs
+    var urlRegex = /(https?:\/\/[^\s">]+)/g;
+    var matches = sourceCode.match(urlRegex);
+
+    // Known file types
+    var knownFileTypes = ['html', 'jpg', 'jpeg', 'png', 'js', 'css', 'json', 'woff2', 'svg', 'xml', 'php'];
+
+    // Object to store file types
+    var fileTypes = {};
+
+    // Object to store hosts
+    var hosts = {};
+
+    var parametersCount = 0;
+
+    if (matches) {
+    endpoints = matches;
+    endpoints.forEach(url => {
+        var urlInstance;
+
+        try {
+            urlInstance = new URL(url);
+        } catch (_) {
+            return; // invalid url, so return and skip further execution
+        }
+
+        // Check for parameters
+        if(url.includes("?")) parametersCount++;
+
+        // Check for file types
+        var fileType = url.split('.').pop().split(/\#|\?/)[0];
+        if(knownFileTypes.includes(fileType)) {
+            if(fileTypes[fileType]) fileTypes[fileType]++;
+            else fileTypes[fileType] = 1;
+        }
+
+        // Check for hosts
+        var host = urlInstance.hostname; // changed this line
+        if(hosts[host]) hosts[host]++;
+        else hosts[host] = 1;
+    });
+}
+    
+    var outputBox = document.getElementById("outputBox");
+    outputBox.textContent = endpoints.join("\n");
+
+    var end = performance.now();
+    var time = end - start;
+
+    var statusBox = document.getElementById("statusBox");
+    statusBox.innerText = 'The task finished in ' + time.toFixed(2) + ' milliseconds.\n' + 
+                         endpoints.length + ' URLs found.\n' + 
+                         parametersCount + ' parameters found.\n';
+
+    // Display file types
+    for (let type in fileTypes) {
+        statusBox.innerText += fileTypes[type] + ' ' + type + ' files found.\n';
+    }
+
+    // Display hosts
+    for (let host in hosts) {
+        statusBox.innerText += hosts[host] + ' URLs found on ' + host + '.\n';
+    }
+}
+
+function downloadResults() {
+    var text = document.getElementById('outputBox').value;
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', 'UltraSound_Scan_Results.txt');
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+
+
+    </script>
+</head>
+<body>
+    <div class="navbar">
+  <div class="nav-item">
+    <a href="https://bugbounty.zip/index.html" target="_blank">Home</a>
+  </div>
+  <div class="nav-item">
+    <div class="dropdown">
+      <a href="#">Tools</a>
+      <div class="dropdown-content">
+        <a href="https://bugbounty.zip/otp.html" target="_blank">OTP Generator</a>
+        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">UltraSoundScan</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-item">
+    <a href="https://bugbounty.zip/About.html" target="_blank">About</a>
+  </div>
+  <div class="nav-item">
+    <a href="https://bugbounty.zip/Patch.html" target="_blank">Patch Notes</a>
+  </div>
+</div>
+    <div class="container">
+        <div class="title">UltraSoundJS Scan</div>
+        <div class="description">
+            <p>Paste HTML source code or JavaScript file below:</p>
+			<p>98% Accurate</p>
+        </div>
+        <div class="input-container">
+    <textarea id="sourceCode" class="textarea" rows="10" cols="50" placeholder="Enter the source code here..."></textarea><br>
+</div>
+        <div class="button-container">
+            <button onclick="extractEndpoints()" class="button">Run UltraSound Scan</button>
+        </div>
+        <div class="title">Output:</div>
+        <div class="output-container">
+            <textarea id="outputBox" class="textarea" readonly></textarea>
+        </div>
+		<div id="statusBox"></div>
+
+		
+		<div class="export-container">
+    <button onclick="downloadResults()" class="button">Export Results</button>
+</div>
+
+    </div>
+    <div class="footer">
+        <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank">
+            <i class="fab fa-twitter-square"></i>
+        </a>
+        <a href="mailto:no-reply@nobugescapes.com" class="icon-link">
+            <i class="fas fa-envelope-square"></i>
+        </a>
+    </div>
+   <script>
+function toggleDarkMode() {
+    // Toggle the "dark-mode" class on the body
+    document.body.classList.toggle('dark-mode');
+
+    // Save the current class list in localStorage
+    localStorage.setItem('darkModeStatus', document.body.classList);
+
+    // Store the current state in local storage
+    let darkMode = localStorage.getItem('darkMode');
+    if (darkMode !== 'enabled') {
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        localStorage.setItem('darkMode', null);
+    }
+}
+
+window.onload = function() {
+    // Check for dark mode status
+    var savedClassList = localStorage.getItem('darkModeStatus');
+    let darkMode = localStorage.getItem('darkMode');
+
+    // Apply dark mode if it was previously enabled
+    if ((savedClassList && savedClassList.includes('dark-mode')) || (darkMode === 'enabled')) {
+        document.body.classList.add('dark-mode');
+    }
+};
+</script>
+
+</body>
+</html>
