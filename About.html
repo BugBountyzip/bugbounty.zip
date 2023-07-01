@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://bugbounty.zip/css/styles.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+ 
+		.description p {
+    margin-bottom: 1em; /* This creates a margin at the bottom of each paragraph inside the .description div */
+}
+
+@media screen and (max-width: 600px) {
+    .title {
+        font-size: 24px;
+    }
+    .description {
+        font-size: 16px;
+    }
+}
+
+    </style>
+
+</head>
+<body>
+     <div class="navbar">
+  <div class="nav-item">
+    <a href="https://bugbounty.zip/index.html" target="_blank">Home</a>
+  </div>
+  <div class="nav-item">
+    <div class="dropdown">
+      <a href="#">Tools</a>
+      <div class="dropdown-content">
+        <a href="https://bugbounty.zip/otp.html" target="_blank">OTP Generator</a>
+        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">UltraSoundScan</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-item">
+    <a href="https://bugbounty.zip/About.html" target="_blank">About</a>
+  </div>
+  <div class="nav-item">
+    <a href="https://bugbounty.zip/Patch.html" target="_blank">Patch Notes</a>
+  </div>
+</div>
+    <div class="container">
+        <div class="title">About BugBounty.Zip</div>
+<div class="description">
+    <p>Welcome to BugBounty.Zip, your comprehensive toolbox specifically designed for your domain operations, while ensuring the utmost importance is placed on privacy and security. We are committed to simplifying and enhancing the daily processes of bug bounty hunters, penetration testers, and cybersecurity enthusiasts worldwide, all within the secure environment of your local machine.</p>
+
+    <p>At BugBounty.Zip, we provide you with an array of functionalities programmed through JavaScript, thus ensuring that no information leaves your local system. Our platform allows you to seamlessly add protocols to your domains, conduct surgical removal or replacement of specific words, and extract endpoints with maximum accuracy and efficiency. The magic of these operations is that everything happens locally on your machine, guaranteeing your data's confidentiality and security.</p>
+
+
+    <p>Your satisfaction is our success. We hope you will find our services as enjoyable and practical as we found pleasure in creating them for you If you come across any user experience or security bugs, or wish to request a new feature, we encourage you to reach out to us at <a href="mailto:no-reply@nobugescapes.com">no-reply@nobugescapes.com</a> Your feedback is vital in our journey to continuous improvement and in ensuring that BugBounty.Zip remains your go-to solution for secure, efficient, and local domain operations.</p>
+	
+</div>
+
+	
+	<div class="footer">
+  <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank">
+    <i class="fab fa-twitter-square"></i>
+  </a>
+  <a href="mailto:no-reply@nobugescapes.com" class="icon-link">
+    <i class="fas fa-envelope-square"></i>
+  </a>
+</div>
+
+<script>
+function toggleDarkMode() {
+    var element = document.body;
+    element.classList.toggle("dark-mode");
+    // Save the current class list in localStorage.
+    localStorage.setItem('darkModeStatus', element.classList);
+}
+
+window.onload = function() {
+    var savedClassList = localStorage.getItem('darkModeStatus');
+    let darkMode = localStorage.getItem('darkMode');
+
+    // Apply dark mode if it was previously enabled
+    if ((savedClassList && savedClassList.includes('dark-mode')) || (darkMode === 'enabled')) {
+        document.body.classList.add('dark-mode');
+    }
+};
+
+
+// On page load, check if dark mode was previously enabled
+    window.onload = function() {
+        let darkMode = localStorage.getItem('darkMode');
+
+        // Apply dark mode if it was previously enabled
+        if (darkMode === 'enabled') {
+            document.body.classList.add('dark-mode');
+        }
+    };
+
+    function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+
+    // Save the current class list in localStorage.
+    localStorage.setItem('darkModeStatus', document.body.classList);
+
+    // Store the current state in local storage
+    let darkMode = localStorage.getItem('darkMode');
+    if (darkMode !== 'enabled') {
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        localStorage.setItem('darkMode', null);
+    }
+}
+
+	
+	
+</script>
+
+</body>
+</html>
