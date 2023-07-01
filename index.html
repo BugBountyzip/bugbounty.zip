@@ -39,10 +39,11 @@
         <button class="button" onclick="extractEndpoints()">Extract Endpoints</button>
         <button class="button" onclick="extractParameters()">Extract Parameters</button>
         <button class="button" onclick="openMultipleURLs()">Open Multiple URLs</button>
+	<button class="button" onclick="addPath()">Add Path</button>
         <textarea id="outputArea" placeholder="Your result will appear here..."></textarea>
-		<button class="button" onclick="exportData('csv')">Export to CSV</button>
+	<button class="button" onclick="exportData('csv')">Export to CSV</button>
         <button class="button" onclick="exportData('json')">Export to JSON</button>
-		<button class="button dark-mode-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+	<button class="button dark-mode-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 		
 
 
@@ -127,6 +128,19 @@
         });
         outputArea.value = result.join('\n');
     }
+	
+	function addPath() {
+    let pathToAdd = prompt('Enter path to be added (should start with "/"):');
+    if (pathToAdd) {
+        let inputArea = document.getElementById('inputArea');
+        let outputArea = document.getElementById('outputArea');
+        let domains = inputArea.value.split('\n');
+        let result = domains.map(domain => domain + pathToAdd);
+        outputArea.value = result.join('\n');
+    }
+}
+
+
 
     function exportData(format) {
             let outputArea = document.getElementById('outputArea');
