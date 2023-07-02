@@ -107,12 +107,17 @@
     }
 
     function removeDuplicates() {
-        let inputArea = document.getElementById('inputArea');
-        let outputArea = document.getElementById('outputArea');
-        let domains = (outputArea.value || inputArea.value).split('\n');
-        let unique = [...new Set(domains)];
-        outputArea.value = unique.join('\n');
+    let inputArea = document.getElementById('inputArea');
+    let outputArea = document.getElementById('outputArea');
+    let domains = (outputArea.value || inputArea.value).split('\n');
+    
+    let uniqueSet = new Set();
+    for(let domain of domains){
+        uniqueSet.add(domain.trim());
     }
+    
+    outputArea.value = Array.from(uniqueSet).join('\n');
+}
 
     function extractEndpoints() {
         let inputArea = document.getElementById('inputArea');
