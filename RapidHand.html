@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0ZLYYNQ68Z');
+</script>
+    <title>Rapid-Hand</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://bugbounty.zip/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <style>
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #payloadArea, #domainArea, #outputArea {
+        width: 100%;
+        height: 200px;
+        margin-bottom: 20px;
+        padding: 10px;
+        font-size: 16px;
+        resize: none; 
+    }
+
+    .button {
+    padding: 10px 30px;  /
+    font-size: 20px;  
+    margin: 20px 10px;  
+    align-self: center;  
+    border: none;  
+    background-color: #4CAF50;  
+    color: white;  
+    cursor: pointer; 
+    text-align: center;  
+    text-decoration: none;  
+    display: inline-block;  
+    font-size: 16px;  
+    margin: 4px 2px;  
+    transition-duration: 0.4s;  
+    border-radius: 12px; 
+}
+
+
+
+
+    .title {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+            .textarea {
+                height: 100px; 
+            }
+
+
+            .title {
+                font-size: 24px;
+            }
+
+            .description {
+                font-size: 16px;
+            }
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    </style>
+
+    </style>
+
+    <script>
+        function combinePayloadsAndDomains() {
+            let payloadArea = document.getElementById('payloadArea');
+            let domainArea = document.getElementById('domainArea');
+            let outputArea = document.getElementById('outputArea');
+            let resultsArea = document.getElementById('resultsArea');
+        
+            let payloads = payloadArea.value.split('\n');
+            let domains = domainArea.value.split('\n');
+        
+            let result = [];
+            for (let domain of domains) {
+                for (let payload of payloads) {
+                    let domainParts = domain.split("=");
+                    let newUrl = domainParts[0] + "=" + payload;
+                    result.push(newUrl);
+                }
+            }
+        
+            outputArea.value = result.join('\n');
+
+            resultsArea.innerText = `You have entered ${payloads.length} payloads and ${domains.length} parameters. All parameters was injected. The output is ${payloads.length * domains.length} lines!`;
+        }
+
+        function removeDuplicates() {
+            let outputArea = document.getElementById('outputArea');
+            let lines = outputArea.value.split('\n');
+            let uniqueLines = [...new Set(lines)];
+            outputArea.value = uniqueLines.join('\n');
+        }
+
+        function exportToFile() {
+            let outputArea = document.getElementById('outputArea');
+            let blob = new Blob([outputArea.value], { type: 'text/plain' });
+            let anchor = document.createElement('a');
+            anchor.download = "output.txt";
+            anchor.href = window.URL.createObjectURL(blob);
+            anchor.target ='_blank';
+            anchor.style.display = 'none'; 
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        }
+		
+		    let isEncoded = false;
+
+function encodeOrDecodeUrls() {
+    let outputArea = document.getElementById('outputArea');
+    let lines = outputArea.value.split('\n');
+
+    if (!isEncoded) {
+        let encodedLines = lines.map(line => {
+            let parts = line.split(/=(.+)/);  // Split at first occurrence of "="
+            let urlPart = parts[0];
+            let paramPart = parts[1];
+            return urlPart + "=" + fullUrlEncode(paramPart);
+        });
+        outputArea.value = encodedLines.join('\n');
+        isEncoded = true;
+    } else {
+        let decodedLines = lines.map(line => {
+            let parts = line.split(/=(.+)/);  // Split at first occurrence of "="
+            let urlPart = parts[0];
+            let paramPart = parts[1];
+            return urlPart + "=" + fullUrlDecode(paramPart);
+        });
+        outputArea.value = decodedLines.join('\n');
+        isEncoded = false;
+    }
+}
+
+
+
+
+function fullUrlEncode(str) {
+    return encodeURIComponent(str);
+}
+
+function fullUrlDecode(str) {
+    try {
+        return decodeURIComponent(str);
+    } catch(e) {
+        console.log('Error decoding URI: ' + e);
+        return str;
+    }
+}
+
+
+let devModeCounter = 0;
+let devModeEnabled = false;
+
+function openUrlsInNewTabs() {
+    let outputArea = document.getElementById('outputArea');
+    let urls = outputArea.value.split('\n');
+    let maxUrls = devModeEnabled ? urls.length : 50;
+
+    if(urls.length > 50 && !devModeEnabled) {
+        alert("To open more than 50 URLs at once, enable developer mode by clicking the 'Build' button 7 times.");
+        return;
+    }
+
+    for (let i = 0; i < Math.min(urls.length, maxUrls); i++) {
+        window.open(urls[i], '_blank');
+    }
+}
+
+function enableDeveloperMode() {
+    devModeCounter += 1;
+
+    if (devModeCounter >= 7) {
+        devModeEnabled = true;
+        alert("Developer mode enabled! You can now open more than 50 URLs at a time.");
+    }
+}
+
+
+
+
+
+    </script>
+</head>
+<body>
+    <div class="navbar">
+  <div class="nav-item">
+    <a href="https://bugbounty.zip/index.html" target="_blank">Home</a>
+  </div>
+  <div class="nav-item">
+    <div class="dropdown">
+      <a href="#">Tools</a>
+      <div class="dropdown-content">
+	    <a href="https://bugbounty.zip/RapidHand.html" target="_blank">Rapid-Hand</a>
+        <a href="https://bugbounty.zip/otp.html" target="_blank">OTP Generator</a>
+        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">UltraSoundScan</a>
+      </div>
+    </div>
+  </div>
+  <div class="nav-item">
+    <a href="https://bugbounty.zip/About.html" target="_blank">About</a>
+  </div>
+  <div class="nav-item">
+    <a href="https://bugbounty.zip/Patch.html" target="_blank">Patch Notes</a>
+  </div>
+</div>
+ <div class="container">
+        <div class="title">Rapid-Hand inject your payloads with list of urls!</div>
+        <div class="description">
+            <p>Enter your payloads and list of URLs with parameters:</p>
+        </div>
+        <div class="input-container">
+            <textarea id="payloadArea" class="textarea" placeholder="Enter your payloads here..."></textarea>
+            <textarea id="domainArea" class="textarea" placeholder="Enter your URLs/Endpoints/Paramters here..."></textarea>
+            <textarea id="outputArea" class="textarea" placeholder="Your result will appear here..."></textarea>
+
+        </div>
+        <div class="button-container">
+		    <div id="resultsArea" class="description"></div>
+            <button onclick="combinePayloadsAndDomains()" class="button">Combine Payloads and Domains</button>
+			<button onclick="encodeOrDecodeUrls()" class="button">URL Encode/Decode</button>
+            <button onclick="removeDuplicates()" class="button">Remove Duplicates</button>
+			<button onclick="copyToClipboard()" class="button">Copy to Clipboard</button>
+			<button onclick="openUrlsInNewTabs()" class="button">Open URLs in New Tabs</button>
+            <button onclick="enableDeveloperMode()" class="button">Build</button>
+            <button onclick="exportToFile()" class="button">Export to File</button>
+        </div>
+    <div class="footer">
+        <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank">
+            <i class="fab fa-twitter-square"></i>
+        </a>
+        <a href="mailto:no-reply@nobugescapes.com" class="icon-link">
+            <i class="fas fa-envelope-square"></i>
+        </a>
+    </div>
+   <script>
+function toggleDarkMode() {
+    // Toggle the "dark-mode" class on the body
+    document.body.classList.toggle('dark-mode');
+
+    // Save the current class list in localStorage
+    localStorage.setItem('darkModeStatus', document.body.classList);
+
+    // Store the current state in local storage
+    let darkMode = localStorage.getItem('darkMode');
+    if (darkMode !== 'enabled') {
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        localStorage.setItem('darkMode', null);
+    }
+}
+
+window.onload = function() {
+    // Check for dark mode status
+    var savedClassList = localStorage.getItem('darkModeStatus');
+    let darkMode = localStorage.getItem('darkMode');
+
+    // Apply dark mode if it was previously enabled
+    if ((savedClassList && savedClassList.includes('dark-mode')) || (darkMode === 'enabled')) {
+        document.body.classList.add('dark-mode');
+    }
+};
+
+function copyToClipboard() {
+    let outputArea = document.getElementById('outputArea');
+    navigator.clipboard.writeText(outputArea.value)
+        .then(() => {
+            alert('Text copied to clipboard');
+        })
+        .catch(err => {
+            alert('Error in copying text: ' + err);
+        });
+}
+
+</script>
+
+</body>
+</html>
