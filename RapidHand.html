@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://bugbounty.zip/css/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   <style>
+  <style>
     .container {
         width: 80%;
         margin: 0 auto;
@@ -46,7 +46,7 @@
     text-align: center;  
     text-decoration: none;  
     display: inline-block;  
-    font-size: 16px;  
+    font-size: 13px;  
     margin: 4px 2px;  
     transition-duration: 0.4s;  
     border-radius: 12px; 
@@ -87,23 +87,24 @@
             align-items: center;
         }
 		
-		 @media (max-width: 600px) {
-        .button {
-            padding: 5px 15px; 
-            font-size: 14px;    
-            margin: 10px 5px;   
-        }
+		@media (max-width: 600px) {
+    #dontInjectArea, .textarea {
+        width: 100%;
     }
+}
+
 	
 	#outputArea {
             margin-bottom: 2px;
         }
     }
 	
-	#dontInjectArea {
+	#dontInjectArea, .textarea {
     resize: none; /* Prevent resizing */
-    width: 550px; /* Set width in pixels */
+    width: 100%; /* Set width as percentage */
+    height: 50px;
 }
+
 
 
 .textarea {
@@ -113,6 +114,10 @@
 }
 
     </style>
+
+
+
+
 
     <script>
         function combinePayloadsAndDomains() {
