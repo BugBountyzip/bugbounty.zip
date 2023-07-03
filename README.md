@@ -15,6 +15,7 @@ Here's a brief overview of the tools BugBountyZIP provides:
 7. **Open Multiple URLs:** Opens multiple URLs at once.
 8. **OTP Generator:** A one-time password generator tool.
 9. **UltraSoundSource Scan:** Scans the input source code or JavaScript file to find endpoints, parameters, and domains.
+10. **Rapid-Hand** for faster payload injection.
 
 ## Usage :computer:
 Simply navigate to [BugBounty.zip](https://BugBounty.zip) to start using the tools.
