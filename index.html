@@ -189,20 +189,6 @@
             }
         }
 
-    function toggleDarkMode() {
-    var element = document.body;
-    element.classList.toggle("dark-mode");
-    // Save the current class list in localStorage.
-    localStorage.setItem('darkModeStatus', element.classList);
-}
-
-window.onload = function() {
-    var savedClassList = localStorage.getItem('darkModeStatus');
-    if (savedClassList && savedClassList.includes('dark-mode')) {
-        document.body.classList = savedClassList;
-    }
-}
-
 function openMultipleURLs() {
     let inputArea = document.getElementById('inputArea');
     let outputArea = document.getElementById('outputArea');
@@ -214,30 +200,7 @@ function openMultipleURLs() {
         window.open(domain, '_blank');
     });
 }
-
-// On page load, check if dark mode was previously enabled
-    window.onload = function() {
-        let darkMode = localStorage.getItem('darkMode');
-
-        // Apply dark mode if it was previously enabled
-        if (darkMode === 'enabled') {
-            document.body.classList.add('dark-mode');
-        }
-    };
-
-    // The function to toggle dark mode and update the local storage
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-
-        // Store the current state in local storage
-        let darkMode = localStorage.getItem('darkMode');
-        if (darkMode !== 'enabled') {
-            localStorage.setItem('darkMode', 'enabled');
-        } else {
-            localStorage.setItem('darkMode', null);
-        }
-    }
 </script>
-
+<script src="https://bugbounty.zip/js/darkmode.js"></script>
 </body>
 </html>
