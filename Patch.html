@@ -92,7 +92,15 @@
     <div class="container">
     <div class="title">Patch Notes</div>
     <div class="description">
-        <p>Last Updated: 2023-07-03</p>
+        <p>Last Updated: 2023-07-07</p>
+  
+  <h3>2023-07-07</h3>
+  
+  <ul>
+    <li>Fixed a bug in the tool's parameter injection functionality. Previously, only the first parameter was being injected, while the rest of the parameters from user input were ignored. Thanks to <a href="https://twitter.com/c0nqr0r" target="_blank">@c0nqr0r</a>'s valuable feedback, this issue has been identified and resolved.</li>
+    
+    <li>Incorporated a new filter mechanism to exclude certain parameters from being injected. This enhancement was suggested by <a href="https://twitter.com/c0nqr0r" target="_blank">@c0nqr0r</a> to provide better control over the input parameters and prevent unwanted injection. The filter ensures that only the intended parameters are processed by the tool.</li>
+  </ul>
 		
 		<h3>2023-07-03</h3>
     <ul>
@@ -222,4 +230,3 @@ window.onload = function() {
 
 </body>
 </html>
-
