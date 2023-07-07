@@ -208,34 +208,6 @@ function downloadResults() {
             <i class="fas fa-envelope-square"></i>
         </a>
     </div>
-   <script>
-function toggleDarkMode() {
-    // Toggle the "dark-mode" class on the body
-    document.body.classList.toggle('dark-mode');
-
-    // Save the current class list in localStorage
-    localStorage.setItem('darkModeStatus', document.body.classList);
-
-    // Store the current state in local storage
-    let darkMode = localStorage.getItem('darkMode');
-    if (darkMode !== 'enabled') {
-        localStorage.setItem('darkMode', 'enabled');
-    } else {
-        localStorage.setItem('darkMode', null);
-    }
-}
-
-window.onload = function() {
-    // Check for dark mode status
-    var savedClassList = localStorage.getItem('darkModeStatus');
-    let darkMode = localStorage.getItem('darkMode');
-
-    // Apply dark mode if it was previously enabled
-    if ((savedClassList && savedClassList.includes('dark-mode')) || (darkMode === 'enabled')) {
-        document.body.classList.add('dark-mode');
-    }
-};
-</script>
-
+<script src="https://bugbounty.zip/js/darkmode.js"></script>	
 </body>
 </html>
