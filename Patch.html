@@ -77,7 +77,8 @@
       <a href="#">Tools</a>
       <div class="dropdown-content">
 	    <a href="https://bugbounty.zip/RapidHand.html" target="_blank">Rapid-Hand</a>
-        <a href="https://bugbounty.zip/BoilOver.html" target="_blank">Boil Over BETA</a>
+      <a href="https://bugbounty.zip/BoilOver.html" target="_blank">Boil Over</a>
+      <a href="https://bugbounty.zip/Hope.html" target="_blank">Hope</a>
         <a href="https://bugbounty.zip/otp.html" target="_blank">OTP Generator</a>
         <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">UltraSoundScan</a>
       </div>
@@ -93,13 +94,21 @@
     <div class="container">
     <div class="title">Patch Notes</div>
     <div class="description">
-        <p>Last Updated: 2023-07-10</p>
+        <p>Last Updated: 2023-07-30</p>
 
-	    <h3>2023-07-10</h3>
+        <h3>2023-07-30</h3>
+
 <ul>
-    <li>Launched 'Boil Over', a tool for extracting the root domain from lists of domains and subdomains, which also removes any duplicated entities. Note, it has limitations dealing with second-level domains (SLD) such as "example.com.uk".</li>
-</ul>
+  <li>Fixed a bug on Rapid Hand where it wasn't functioning correctly. The issue arose when users input a URL without any parameters. Thanks to <a href="https://twitter.com/Az7rb" target="_blank">@Az7rb</a>'s valuable contribution.</li>
 
+  <li>Implemented automatic removal of URLs without any parameters from the Rapid Hand output. Thanks to <a href="https://twitter.com/Az7rb" target="_blank">@Az7rb</a>'s valuable contribution.</li>
+
+  <li>Enhanced the results message for better clarity and accuracy.</li>
+
+  <li>We've upgraded the website's input/output boxes with subtle shadows, making the experience more visually appealing and user-friendly.</li>
+
+  <li>Introducing Hope - a tool to scan URLs for potential vulnerable parameters, with a focus on OWASP's top 25 vulnerabilities.</li>
+</ul>
   
   <h3>2023-07-07</h3>
   
@@ -237,3 +246,4 @@ window.onload = function() {
 
 </body>
 </html>
+
