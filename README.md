@@ -17,6 +17,7 @@ Here's a brief overview of the tools BugBountyZIP provides:
 9. **UltraSoundSource Scan:** Scans the input source code or JavaScript file to find endpoints, parameters, and domains.
 10. **Append** a specific path to entered domains/URLs.
 11. **Rapid-Hand** for faster payload injection.
+12. **Hope** a tool to scan URLs for potential vulnerable parameters, with a focus on OWASP's top 25 vulnerabilities.
 
 ## Usage :computer:
 Simply navigate to [BugBounty.zip](https://BugBounty.zip) to start using the tools.
