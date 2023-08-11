@@ -82,6 +82,9 @@
         <div class="description">Don't let a single bug escape unnoticed, Evidence is your reliable ally, capturing bugs as they happen.</div>
 
         <button id="start">Start recording</button>
+<label>
+    <input type="checkbox" id="recordAudio"> Record with Audio
+</label>
     </div>
      <div class="footer">
         <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank">
@@ -97,49 +100,70 @@
     let recordedBlobs;
 
 const startButton = document.getElementById('start');
+const recordAudioCheckbox = document.getElementById('recordAudio');
 
-// Check for browser support
-if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
-    startButton.after('Your browser is not supported for screen recording.'); // Adds the text after the startButton
-    startButton.disabled = true; // Disables the start button
+function downloadRecordedVideo() {
+    if (recordedBlobs.length) { // Check if we have valid data chunks
+        const blob = new Blob(recordedBlobs, {type: 'video/webm'});
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = `${new Date().toISOString().slice(0,10)}_${Math.random().toString(36).substring(2, 7)}.webm`;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 100);
+    }
+    startButton.innerHTML = 'Start recording';  // Reset the button text
+}
+
+
+if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia || !navigator.mediaDevices.getUserMedia) {
+    startButton.after('Your browser is not supported for screen recording.');
+    startButton.disabled = true;
 } else {
     const startRecording = async () => {
-        const stream = await navigator.mediaDevices.getDisplayMedia({video: true});
-        recordedBlobs = [];
-        mediaRecorder = new MediaRecorder(stream, {mimeType: 'video/webm'});
+        const shouldRecordAudio = recordAudioCheckbox.checked;
+        const videoStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
 
+        let combinedStream = videoStream;
+        if (shouldRecordAudio) {
+            const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const audioTracks = [...videoStream.getAudioTracks(), ...micStream.getAudioTracks()];
+            combinedStream = new MediaStream([...videoStream.getVideoTracks(), ...audioTracks]);
+        }
+
+        recordedBlobs = [];
+        mediaRecorder = new MediaRecorder(combinedStream, { mimeType: 'video/webm' });
+        
         mediaRecorder.ondataavailable = (event) => {
             if (event.data && event.data.size > 0) {
                 recordedBlobs.push(event.data);
             }
         };
 
-        mediaRecorder.onstop = () => {
-            const blob = new Blob(recordedBlobs, {type: 'video/webm'});
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = url;
-            a.download = `${new Date().toISOString().slice(0,10)}_${Math.random().toString(36).substring(2, 7)}.webm`;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }, 100);
+        combinedStream.getTracks().forEach(track => {
+            track.onended = async () => {
+                if (mediaRecorder.state !== "inactive") {
+                    mediaRecorder.stop();
+                    await new Promise(r => setTimeout(r, 500));  // Delay to ensure enough data chunks
+                    downloadRecordedVideo();
+                }
+            };
+        });
 
-            startButton.innerHTML = 'Start recording';
-        };
-
-        startButton.innerHTML = 'Recording...';
         mediaRecorder.start();
+        startButton.innerHTML = 'Recording...';
     }
 
     startButton.onclick = startRecording;
 }
+
+
+
 </script>
-
-
-
-
+	
 </html>
