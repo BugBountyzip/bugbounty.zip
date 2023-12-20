@@ -32,7 +32,5 @@ Your support means a lot to us. It helps us dedicate more time to maintaining th
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/BugBounty.ZIP)
 
-## License :page_with_curl:
-This project is licensed under the MIT License. See `LICENSE` for more information.
 
 
