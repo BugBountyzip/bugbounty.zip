@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caido Plugin Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-blue-900 text-white flex flex-col min-h-screen">
+    <div class="container mx-auto p-4 flex-grow">
+        <header class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold flex items-center">
+                <i class="fas fa-shopping-bag mr-2"></i>
+                Caido Plugin Store
+            </h1>
+        </header>
+        
+        <nav class="mb-6">
+            <ul class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                <li class="w-full sm:w-auto"><a href="#" class="block bg-blue-800 hover:bg-blue-700 p-2 rounded text-center">Latest</a></li>
+                <li class="w-full sm:w-auto"><a href="#" class="block bg-blue-800 hover:bg-blue-700 p-2 rounded text-center">All Items</a></li>
+                <li class="w-full sm:w-auto"><a href="#" class="block bg-blue-800 hover:bg-blue-700 p-2 rounded text-center">Categories</a></li>
+            </ul>
+        </nav>
+        
+        <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="bg-blue-800 p-4 rounded">
+                <div class="flex items-center mb-2">
+                    <i class="fas fa-list text-2xl mr-2"></i>
+                    <h2 class="text-xl font-bold">All-in-One Wordlist Repository</h2>
+                </div>
+                <img src="path_to_your_image.jpg" alt="All-in-One Wordlist Repository" class="w-full h-40 object-cover mb-2 rounded">
+                <p class="mb-2"> Wordlist plugin for all your security testing needs.</p>
+                <a href="https://raw.githubusercontent.com/BugBountyzip/bugbounty.zip/refs/heads/main/caido/Wordlist.zip" class="block bg-green-500 hover:bg-green-600 text-center py-2 rounded">Download Free</a>
+            </div>
+        </main>
+    </div>
+    
+    <footer class="bg-blue-800 text-white py-4 mt-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>This is a temporary store for Caido plugins. Soon to be moved to <a href="https://marketplace.bugbounty.zip/" class="underline hover:text-blue-300">https://marketplace.bugbounty.zip/</a></p>
+            <p class="mt-2 text-sm">Design inspired by the PlayStation 3 store from 2012</p>
+        </div>
+    </footer>
+</body>
+</html>
