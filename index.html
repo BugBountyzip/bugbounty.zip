@@ -1,307 +1,981 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-0ZLYYNQ68Z');
-</script>
-<title>Home Page</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://bugbounty.zip/css/styles.css">
-<style>
-    .info-display {
-        margin: 10px 0;
-        padding: 8px;
-        background-color: #f0f0f0;
-        border-radius: 4px;
-        font-size: 14px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugBounty.Zip - Domain Operations Suite</title>
     
-    .dark-mode .info-display {
-        background-color: #333;
-        color: #f0f0f0;
-    }
-</style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0ZLYYNQ68Z');
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --bg-tertiary: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --navbar-height: 60px;
+            --transition-fast: 150ms ease;
+            --transition-normal: 300ms ease;
+        }
+
+        /* Dark mode colors */
+        [data-theme="dark"] {
+            --primary-color: #818cf8;
+            --primary-hover: #6366f1;
+            --secondary-color: #a78bfa;
+            --success-color: #34d399;
+            --danger-color: #f87171;
+            --warning-color: #fbbf24;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        html {
+            height: 100%;
+            background-color: var(--bg-primary);
+            transition: background-color var(--transition-normal);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-normal);
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--navbar-height);
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+            transition: all var(--transition-normal);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-item a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+        }
+
+        .nav-item a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-secondary);
+            min-width: 200px;
+            box-shadow: var(--shadow-xl);
+            border-radius: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-normal);
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            border-radius: 0;
+        }
+
+        .dropdown-content a:first-child {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        .dropdown-content a:last-child {
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-left: auto;
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: calc(var(--navbar-height) + 2rem) 1rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: grid;
+            gap: 2rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        /* Textarea Styling */
+        .textarea-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: all var(--transition-normal);
+            line-height: 1.5;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        /* Stats Display */
+        .info-display {
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-radius: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-normal);
+        }
+
+        .info-display i {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        /* Button Grid */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .button:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-md);
+        }
+
+        .button.primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .button.primary:hover {
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
+            color: white;
+        }
+
+        .button.success {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .button.success:hover {
+            background: #059669;
+            border-color: #059669;
+            color: white;
+        }
+
+        [data-theme="dark"] .button.success:hover {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        /* Export Buttons Section */
+        .export-section {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .export-section .button {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-xl);
+            transition: all var(--transition-normal);
+            z-index: 100;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon-link {
+            color: var(--text-secondary);
+            font-size: 2rem;
+            transition: all var(--transition-fast);
+            display: inline-block;
+        }
+
+        .icon-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: var(--navbar-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--navbar-height));
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                transition: left var(--transition-normal);
+                box-shadow: var(--shadow-xl);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                margin-top: 0.5rem;
+                margin-left: 1rem;
+            }
+
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dark-mode-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .export-section {
+                flex-direction: column;
+            }
+
+            .container {
+                padding-top: calc(var(--navbar-height) + 1rem);
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--bg-tertiary);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Tooltips */
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            white-space: nowrap;
+            font-size: 0.875rem;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+            z-index: 10;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+    </style>
 </head>
 <body>
-        <div class="navbar">
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/index.html" target="_blank">Home</a>
-  </div>
-  <div class="nav-item">
-    <div class="dropdown">
-      <a href="#">Tools</a>
-      <div class="dropdown-content">
-	    <a href="https://bugbounty.zip/RapidHand.html" target="_blank">Rapid-Hand</a>
-        <a href="https://bugbounty.zip/BoilOver.html" target="_blank">Boil Over</a>
-        <a href="https://bugbounty.zip/Hope.html" target="_blank">Hope</a>
-		<a href="https://bugbounty.zip/Evidence.html" target="_blank">Evidence</a>
-        <a href="https://bugbounty.zip/otp.html" target="_blank">OTP Generator</a>
-        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">UltraSoundScan</a>
-      </div>
-    </div>
-  </div>
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/About.html" target="_blank">About</a>
-  </div>
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/Patch.html" target="_blank">Patch Notes</a>
-  </div>
-</div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="https://bugbounty.zip" class="nav-logo">
+                <i class="fas fa-bug"></i>
+                BugBounty.Zip
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/index.html" target="_blank">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <a href="#">
+                        <i class="fas fa-tools"></i> Tools <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="https://bugbounty.zip/RapidHand.html" target="_blank">
+                            <i class="fas fa-hand-sparkles"></i> Rapid-Hand
+                        </a>
+                        <a href="https://bugbounty.zip/BoilOver.html" target="_blank">
+                            <i class="fas fa-fire"></i> Boil Over
+                        </a>
+                        <a href="https://bugbounty.zip/Hope.html" target="_blank">
+                            <i class="fas fa-dove"></i> Hope
+                        </a>
+                        <a href="https://bugbounty.zip/Evidence.html" target="_blank">
+                            <i class="fas fa-search"></i> Evidence
+                        </a>
+                        <a href="https://bugbounty.zip/otp.html" target="_blank">
+                            <i class="fas fa-key"></i> OTP Generator
+                        </a>
+                        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">
+                            <i class="fas fa-wave-square"></i> UltraSoundScan
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/About.html" target="_blank">
+                        <i class="fas fa-info-circle"></i> About
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/Patch.html" target="_blank">
+                        <i class="fas fa-clipboard-list"></i> Patch Notes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Main Container -->
     <div class="container">
-	    <div class="title">Welcome To BugBounty.Zip</div>
-        <div class="description">Your all-in-one solution for domain operations</div>
-        <textarea id="inputArea" placeholder="Enter your domains here..."></textarea>
-        <div id="statsDisplay" class="info-display">Ready for input...</div>
-        <button class="button" onclick="addProtocol('https://')">Add HTTPS</button>
-        <button class="button" onclick="removeWord()">Remove a Word</button>
-        <button class="button" onclick="replaceWord()">Replace a Word</button>
-        <button class="button" onclick="removeDuplicates()">Remove Duplicates</button>
-        <button class="button" onclick="extractEndpoints()">Extract Endpoints</button>
-        <button class="button" onclick="extractParameters()">Extract Parameters</button>
-        <button class="button" onclick="extractPathWords()">Extract Path Words</button>
-        <button class="button" onclick="openMultipleURLs()">Open Multiple URLs</button>
-		<button class="button" onclick="addPath()">Add Path</button>
-        <textarea id="outputArea" placeholder="Your result will appear here..."></textarea>
-		<button class="button" onclick="exportData('csv')">Export to CSV</button>
-        <button class="button" onclick="exportData('json')">Export to JSON</button>
-		<button class="button dark-mode-button" onclick="toggleDarkMode()">Toggle Dark Mode</button>
-    </div>
-	
-	<div class="footer">
-  <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank">
-    <i class="fab fa-twitter-square"></i>
-  </a>
-  <a href="mailto:no-reply@nobugescapes.com" class="icon-link">
-    <i class="fas fa-envelope-square"></i>
-  </a>
-</div>
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="title">Welcome To BugBounty.Zip</h1>
+            <p class="description">Your all-in-one solution for domain operations with powerful tools and seamless workflow</p>
+        </div>
 
-<script>
-    // Function to update stats when input changes
-    function updateStats() {
-        let inputArea = document.getElementById('inputArea');
-        let lines = inputArea.value.split('\n').filter(line => line.trim() !== '');
-        document.getElementById('statsDisplay').innerText = `Input contains ${lines.length} items`;
-    }
-    
-    // Add event listeners for input changes
-    document.addEventListener('DOMContentLoaded', function() {
-        document.getElementById('inputArea').addEventListener('input', updateStats);
-        
-        // Check for saved dark mode preference
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            document.body.classList.add('dark-mode');
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Input Section -->
+            <div class="textarea-wrapper">
+                <textarea id="inputArea" placeholder="Enter your domains here... (one per line)"></textarea>
+            </div>
+
+            <!-- Stats Display -->
+            <div id="statsDisplay" class="info-display">
+                <span><i class="fas fa-chart-line"></i> Ready for input...</span>
+                <span id="statsCount"></span>
+            </div>
+
+            <!-- Button Grid -->
+            <div class="button-grid">
+                <button class="button" onclick="addProtocol('https://')" data-tooltip="Add HTTPS protocol to domains">
+                    <i class="fas fa-lock"></i> Add HTTPS
+                </button>
+                <button class="button" onclick="removeWord()" data-tooltip="Remove specific word from domains">
+                    <i class="fas fa-eraser"></i> Remove Word
+                </button>
+                <button class="button" onclick="replaceWord()" data-tooltip="Replace word in domains">
+                    <i class="fas fa-exchange-alt"></i> Replace Word
+                </button>
+                <button class="button" onclick="removeDuplicates()" data-tooltip="Remove duplicate entries">
+                    <i class="fas fa-copy"></i> Remove Duplicates
+                </button>
+                <button class="button" onclick="extractEndpoints()" data-tooltip="Extract URL endpoints">
+                    <i class="fas fa-code-branch"></i> Extract Endpoints
+                </button>
+                <button class="button" onclick="extractParameters()" data-tooltip="Extract URL parameters">
+                    <i class="fas fa-filter"></i> Extract Parameters
+                </button>
+                <button class="button" onclick="extractPathWords()" data-tooltip="Extract words from URL paths">
+                    <i class="fas fa-folder-tree"></i> Extract Path Words
+                </button>
+                <button class="button" onclick="addPath()" data-tooltip="Add path to domains">
+                    <i class="fas fa-plus-circle"></i> Add Path
+                </button>
+                <button class="button primary" onclick="openMultipleURLs()" data-tooltip="Open all URLs in new tabs">
+                    <i class="fas fa-external-link-alt"></i> Open URLs
+                </button>
+            </div>
+
+            <!-- Output Section -->
+            <div class="textarea-wrapper">
+                <textarea id="outputArea" placeholder="Your results will appear here..."></textarea>
+            </div>
+
+            <!-- Export Section -->
+            <div class="export-section">
+                <button class="button success" onclick="exportData('csv')">
+                    <i class="fas fa-file-csv"></i> Export to CSV
+                </button>
+                <button class="button success" onclick="exportData('json')">
+                    <i class="fas fa-file-code"></i> Export to JSON
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon" id="darkModeIcon"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="mailto:no-reply@nobugescapes.com" class="icon-link" aria-label="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://github.com/bugbountyzip" class="icon-link" target="_blank" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+        <p style="color: var(--text-tertiary); font-size: 0.875rem;">
+            © 2024 BugBounty.Zip. Built with <i class="fas fa-heart" style="color: var(--danger-color);"></i> for security researchers.
+        </p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
         }
-        
-        // Initialize stats display
-        updateStats();
-    });
-    
-    function addProtocol(protocol) {
-        let inputArea = document.getElementById('inputArea');
-        let outputArea = document.getElementById('outputArea');
-        let domains = (outputArea.value || inputArea.value).split('\n');
-        let result = domains.map(domain => {
-            domain = domain.trim();
-            if (domain === '') return '';
-            if (domain === 'http:' || domain === 'https:') return protocol + '//';
-            if (domain.startsWith('http://') || domain.startsWith('https://')) {
-                return domain;
-            } else {
-                // Handle cases where domain might be URL-encoded
-                try {
-                    domain = decodeURIComponent(domain);
-                } catch (e) {
-                    // If decoding fails, use original domain
-                }
-                return protocol + domain;
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (!navMenu.contains(event.target) && !mobileToggle.contains(event.target)) {
+                navMenu.classList.remove('active');
             }
         });
-        let filteredResult = result.filter(line => line.trim() !== '');
-        outputArea.value = filteredResult.join('\n');
-        document.getElementById('statsDisplay').innerText = `Output contains ${filteredResult.length} items`;
-    }
 
-    function removeWord() {
-        let wordToRemove = prompt('Enter word to be removed:');
-        if (wordToRemove) {
+        // Update stats with better formatting
+        function updateStats() {
+            let inputArea = document.getElementById('inputArea');
+            let lines = inputArea.value.split('\n').filter(line => line.trim() !== '');
+            let statsDisplay = document.getElementById('statsDisplay');
+            
+            if (lines.length > 0) {
+                statsDisplay.innerHTML = '<span><i class="fas fa-chart-line"></i> Input Status</span>';
+                statsDisplay.innerHTML += `<span class="stats-count">${lines.length} ${lines.length === 1 ? 'item' : 'items'}</span>`;
+            } else {
+                statsDisplay.innerHTML = '<span><i class="fas fa-chart-line"></i> Ready for input...</span>';
+            }
+        }
+
+        // Dark mode toggle with icon change
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                darkModeIcon.className = 'fas fa-moon';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                darkModeIcon.className = 'fas fa-sun';
+            }
+        }
+
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add input event listener
+            document.getElementById('inputArea').addEventListener('input', updateStats);
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('darkModeIcon').className = 'fas fa-sun';
+            }
+            
+            // Initialize stats display
+            updateStats();
+        });
+
+        // Helper function
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Main functions
+        function addProtocol(protocol) {
+            let inputArea = document.getElementById('inputArea');
+            let outputArea = document.getElementById('outputArea');
+            let domains = (outputArea.value || inputArea.value).split('\n');
+            let result = domains.map(domain => {
+                domain = domain.trim();
+                if (domain === '') return '';
+                if (domain === 'http:' || domain === 'https:') return protocol + '//';
+                if (domain.startsWith('http://') || domain.startsWith('https://')) {
+                    return domain;
+                } else {
+                    try {
+                        domain = decodeURIComponent(domain);
+                    } catch (e) {}
+                    return protocol + domain;
+                }
+            });
+            let filteredResult = result.filter(line => line.trim() !== '');
+            outputArea.value = filteredResult.join('\n');
+            document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-check-circle" style="color: var(--success-color);"></i> Operation complete</span><span>${filteredResult.length} items</span>`;
+        }
+
+        function removeWord() {
+            let wordToRemove = prompt('Enter word to be removed:');
+            if (wordToRemove) {
+                let inputArea = document.getElementById('inputArea');
+                let outputArea = document.getElementById('outputArea');
+                let domains = (outputArea.value || inputArea.value).split('\n');
+                let filteredDomains = domains.filter(line => line.trim() !== '');
+                let result = filteredDomains.map(domain => domain.replace(new RegExp(wordToRemove, 'g'), ''));
+                outputArea.value = result.join('\n');
+                document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-check-circle" style="color: var(--success-color);"></i> Removed "${wordToRemove}"</span><span>${result.length} items</span>`;
+            }
+        }
+
+        function replaceWord() {
+            let oldWord = prompt('Enter word to be replaced:');
+            let newWord = prompt('Enter new word:');
+            if (oldWord && newWord) {
+                let inputArea = document.getElementById('inputArea');
+                let outputArea = document.getElementById('outputArea');
+                let domains = (outputArea.value || inputArea.value).split('\n');
+                let filteredDomains = domains.filter(line => line.trim() !== '');
+                let result = filteredDomains.map(domain => domain.replace(new RegExp(escapeRegExp(oldWord), 'g'), newWord));
+                outputArea.value = result.join('\n');
+                document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-check-circle" style="color: var(--success-color);"></i> Replaced "${oldWord}" with "${newWord}"</span><span>${result.length} items</span>`;
+            }
+        }
+
+        function removeDuplicates() {
             let inputArea = document.getElementById('inputArea');
             let outputArea = document.getElementById('outputArea');
             let domains = (outputArea.value || inputArea.value).split('\n');
             let filteredDomains = domains.filter(line => line.trim() !== '');
-            let result = filteredDomains.map(domain => domain.replace(new RegExp(wordToRemove, 'g'), ''));
-            outputArea.value = result.join('\n');
-            document.getElementById('statsDisplay').innerText = `Output contains ${result.length} items`;
+            
+            let uniqueSet = new Set();
+            for(let domain of filteredDomains){
+                uniqueSet.add(domain.trim());
+            }
+            
+            let originalCount = filteredDomains.length;
+            let uniqueCount = uniqueSet.size;
+            let removedCount = originalCount - uniqueCount;
+            
+            outputArea.value = Array.from(uniqueSet).join('\n');
+            document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-check-circle" style="color: var(--success-color);"></i> Removed ${removedCount} duplicates</span><span>${uniqueCount} unique items</span>`;
         }
-    }
 
-    function escapeRegExp(string) {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-    }
-
-    function replaceWord() {
-        let oldWord = prompt('Enter word to be replaced:');
-        let newWord = prompt('Enter new word:');
-        if (oldWord && newWord) {
+        function extractEndpoints() {
             let inputArea = document.getElementById('inputArea');
             let outputArea = document.getElementById('outputArea');
-            let domains = (outputArea.value || inputArea.value).split('\n');
+            
+            let domains = inputArea.value.split('\n');
             let filteredDomains = domains.filter(line => line.trim() !== '');
-            let result = filteredDomains.map(domain => domain.replace(new RegExp(escapeRegExp(oldWord), 'g'), newWord));
-            outputArea.value = result.join('\n');
-            document.getElementById('statsDisplay').innerText = `Output contains ${result.length} items`;
-        }
-    }
-
-    function removeDuplicates() {
-        let inputArea = document.getElementById('inputArea');
-        let outputArea = document.getElementById('outputArea');
-        let domains = (outputArea.value || inputArea.value).split('\n');
-        let filteredDomains = domains.filter(line => line.trim() !== '');
-        
-        let uniqueSet = new Set();
-        for(let domain of filteredDomains){
-            uniqueSet.add(domain.trim());
-        }
-        
-        let originalCount = filteredDomains.length;
-        let uniqueCount = uniqueSet.size;
-        let removedCount = originalCount - uniqueCount;
-        
-        outputArea.value = Array.from(uniqueSet).join('\n');
-        document.getElementById('statsDisplay').innerText = `Output contains ${uniqueCount} items (removed ${removedCount} duplicates)`;
-    }
-
-    function extractEndpoints() {
-        // Always use the original input for extracting endpoints
-        let inputArea = document.getElementById('inputArea');
-        let outputArea = document.getElementById('outputArea');
-        
-        // Always use input area content, never output area
-        let domains = inputArea.value.split('\n');
-        let filteredDomains = domains.filter(line => line.trim() !== '');
-        let result = [];
-        
-        if (filteredDomains.length === 0) {
-            outputArea.value = "No input provided. Please enter URLs in the input area.";
-            document.getElementById('statsDisplay').innerText = "No endpoints extracted";
-            return;
-        }
-        
-        filteredDomains.forEach(domain => {
-            domain = domain.trim();
-            // Skip standalone protocol prefixes
-            if (domain === 'http:' || domain === 'https:') {
+            let result = [];
+            
+            if (filteredDomains.length === 0) {
+                outputArea.value = "No input provided. Please enter URLs in the input area.";
+                document.getElementById('statsDisplay').innerHTML = '<span><i class="fas fa-exclamation-circle" style="color: var(--warning-color);"></i> No endpoints extracted</span>';
                 return;
             }
             
-            try {
-                if (domain.startsWith('http://') || domain.startsWith('https://')) {
-                    try {
-                        let url = new URL(domain);
-                        let pathname = url.pathname;
-                        // Decode URL-encoded characters
-                        try {
-                            pathname = decodeURIComponent(pathname);
-                        } catch (e) {
-                            // If decoding fails, use original pathname
-                        }
-                        result.push(pathname);
-                    } catch (e) {
-                        // If URL parsing fails, extract path part after domain
-                        let pathPart = domain.replace(/https?:\/\/[^\/]+/, '');
-                        // Remove query string if present
-                        pathPart = pathPart.split('?')[0];
-                        try {
-                            pathPart = decodeURIComponent(pathPart);
-                        } catch (e) {
-                            // If decoding fails, use original path part
-                        }
-                        if (pathPart) {
-                            result.push(pathPart);
-                        }
-                    }
-                } else {
-                    // If it's already a path, decode it if needed
-                    // Remove query string if present
-                    let path = domain.split('?')[0];
-                    try {
-                        path = decodeURIComponent(path);
-                    } catch (e) {
-                        // If decoding fails, use original domain
-                    }
-                    result.push(path);
-                }
-            } catch(e) {
-                // If it's not a valid URL, just add the domain as is
-                result.push(domain.split('?')[0]);
-            }
-        });
-        
-        if (result.length === 0) {
-            outputArea.value = "No endpoints found in the URLs";
-            document.getElementById('statsDisplay').innerText = "No endpoints extracted";
-        } else {
-            outputArea.value = result.join('\n');
-            document.getElementById('statsDisplay').innerText = `Extracted ${result.length} endpoints`;
-        }
-    }
-
-    function extractParameters() {
-        // Always use the original input area for extracting parameters
-        let inputArea = document.getElementById('inputArea');
-        let outputArea = document.getElementById('outputArea');
-        
-        // Always use input area content, never output area
-        let domains = inputArea.value.split('\n');
-        let filteredDomains = domains.filter(line => line.trim() !== '');
-        
-        let paramSet = new Set(); // use a Set to automatically remove duplicates
-        let foundParams = false;
-        
-        if (filteredDomains.length === 0) {
-            outputArea.value = "No input provided. Please enter URLs in the input area.";
-            document.getElementById('statsDisplay').innerText = "No parameters extracted";
-            return;
-        }
-        
-        filteredDomains.forEach(domain => {
-            try {
+            filteredDomains.forEach(domain => {
                 domain = domain.trim();
-                
-                // Handle URL-encoded domains
-                try {
-                    domain = decodeURIComponent(domain);
-                } catch (e) {
-                    // here decoding fails, use original domain
-                }
-                
-                // skip standalone protocol prefixes
                 if (domain === 'http:' || domain === 'https:') {
                     return;
                 }
                 
-                // extract parameters from URL
                 try {
-                    // make sure it's a full URL if it contains a query string
-                    if (domain.includes('?') && !domain.startsWith('http://') && !domain.startsWith('https://')) {
-                        domain = 'https://' + domain;
+                    if (domain.startsWith('http://') || domain.startsWith('https://')) {
+                        try {
+                            let url = new URL(domain);
+                            let pathname = url.pathname;
+                            try {
+                                pathname = decodeURIComponent(pathname);
+                            } catch (e) {}
+                            result.push(pathname);
+                        } catch (e) {
+                            let pathPart = domain.replace(/https?:\/\/[^\/]+/, '');
+                            pathPart = pathPart.split('?')[0];
+                            try {
+                                pathPart = decodeURIComponent(pathPart);
+                            } catch (e) {}
+                            if (pathPart) {
+                                result.push(pathPart);
+                            }
+                        }
+                    } else {
+                        // Handle domains without protocol
+                        let pathIndex = domain.indexOf('/');
+                        if (pathIndex !== -1) {
+                            // Extract everything after the first slash
+                            let path = domain.substring(pathIndex);
+                            path = path.split('?')[0]; // Remove query string
+                            try {
+                                path = decodeURIComponent(path);
+                            } catch (e) {}
+                            result.push(path);
+                        } else {
+                            // No path found, just root
+                            result.push('/');
+                        }
+                    }
+                } catch(e) {
+                    // Fallback: try to extract path after first slash
+                    let pathIndex = domain.indexOf('/');
+                    if (pathIndex !== -1) {
+                        result.push(domain.substring(pathIndex).split('?')[0]);
+                    } else {
+                        result.push('/');
+                    }
+                }
+            });
+            
+            if (result.length === 0) {
+                outputArea.value = "No endpoints found in the URLs";
+                document.getElementById('statsDisplay').innerHTML = '<span><i class="fas fa-exclamation-circle" style="color: var(--warning-color);"></i> No endpoints extracted</span>';
+            } else {
+                outputArea.value = result.join('\n');
+                document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-check-circle" style="color: var(--success-color);"></i> Extracted endpoints</span><span>${result.length} items</span>`;
+            }
+        }
+
+        function extractParameters() {
+            let inputArea = document.getElementById('inputArea');
+            let outputArea = document.getElementById('outputArea');
+            
+            let domains = inputArea.value.split('\n');
+            let filteredDomains = domains.filter(line => line.trim() !== '');
+            
+            let paramSet = new Set();
+            let foundParams = false;
+            
+            if (filteredDomains.length === 0) {
+                outputArea.value = "No input provided. Please enter URLs in the input area.";
+                document.getElementById('statsDisplay').innerHTML = '<span><i class="fas fa-exclamation-circle" style="color: var(--warning-color);"></i> No parameters extracted</span>';
+                return;
+            }
+            
+            filteredDomains.forEach(domain => {
+                try {
+                    domain = domain.trim();
+                    
+                    try {
+                        domain = decodeURIComponent(domain);
+                    } catch (e) {}
+                    
+                    if (domain === 'http:' || domain === 'https:') {
+                        return;
                     }
                     
-                    if (domain.includes('?')) {
-                        // Extract query string
-                        let queryString = domain.split('?')[1];
-                        if (queryString) {
+                    try {
+                        if (domain.includes('?') && !domain.startsWith('http://') && !domain.startsWith('https://')) {
+                            domain = 'https://' + domain;
+                        }
+                        
+                        if (domain.includes('?')) {
+                            let queryString = domain.split('?')[1];
+                            if (queryString) {
+                                foundParams = true;
+                                queryString = queryString.split('#')[0];
+                                let params = queryString.split('&');
+                                params.forEach(param => {
+                                    let paramName = param.split('=')[0];
+                                    if (paramName && paramName.trim() !== '') {
+                                        paramSet.add(paramName.trim());
+                                    }
+                                });
+                            }
+                        } else if (domain.startsWith('http://') || domain.startsWith('https://')) {
+                            let url = new URL(domain);
+                            if (url.search) {
+                                foundParams = true;
+                                let searchParams = new URLSearchParams(url.search);
+                                for (let param of searchParams.keys()) {
+                                    if (param.trim() !== '') {
+                                        paramSet.add(param.trim());
+                                    }
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        let queryStringMatch = domain.match(/\?([^#]+)/);
+                        if (queryStringMatch && queryStringMatch[1]) {
                             foundParams = true;
-                            queryString = queryString.split('#')[0]; // Remove hash part
+                            let queryString = queryStringMatch[1];
                             let params = queryString.split('&');
                             params.forEach(param => {
                                 let paramName = param.split('=')[0];
@@ -310,216 +984,180 @@
                                 }
                             });
                         }
-                    } else if (domain.startsWith('http://') || domain.startsWith('https://')) {
-                        // Parse as URL to extract search params
-                        let url = new URL(domain);
-                        if (url.search) {
-                            foundParams = true;
-                            let searchParams = new URLSearchParams(url.search);
-                            for (let param of searchParams.keys()) {
-                                if (param.trim() !== '') {
-                                    paramSet.add(param.trim());
-                                }
-                            }
-                        }
                     }
-                } catch (e) {
-                    // If URL parsing fails, try raw query string extraction
-                    let queryStringMatch = domain.match(/\?([^#]+)/);
-                    if (queryStringMatch && queryStringMatch[1]) {
-                        foundParams = true;
-                        let queryString = queryStringMatch[1];
-                        let params = queryString.split('&');
-                        params.forEach(param => {
-                            let paramName = param.split('=')[0];
-                            if (paramName && paramName.trim() !== '') {
-                                paramSet.add(paramName.trim());
+                } catch(e) {}
+            });
+            
+            let uniqueParams = Array.from(paramSet);
+            
+            if (uniqueParams.length === 0) {
+                if (foundParams) {
+                    outputArea.value = "No valid parameters found in URLs";
+                } else {
+                    outputArea.value = "No URLs with query parameters found. Parameters appear after ? in URLs.";
+                }
+                document.getElementById('statsDisplay').innerHTML = '<span><i class="fas fa-exclamation-circle" style="color: var(--warning-color);"></i> No parameters extracted</span>';
+            } else {
+                outputArea.value = uniqueParams.join('\n');
+                document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-check-circle" style="color: var(--success-color);"></i> Extracted parameters</span><span>${uniqueParams.length} unique params</span>`;
+            }
+        }
+
+        function extractPathWords() {
+            let inputArea = document.getElementById('inputArea');
+            let outputArea = document.getElementById('outputArea');
+            
+            let domains = inputArea.value.split('\n');
+            let filteredDomains = domains.filter(line => line.trim() !== '');
+            let words = new Set();
+            
+            if (filteredDomains.length === 0) {
+                outputArea.value = "No input provided. Please enter URLs in the input area.";
+                document.getElementById('statsDisplay').innerHTML = '<span><i class="fas fa-exclamation-circle" style="color: var(--warning-color);"></i> No path words extracted</span>';
+                return;
+            }
+            
+            filteredDomains.forEach(domain => {
+                try {
+                    domain = domain.trim();
+                    
+                    if (domain === 'http:' || domain === 'https:') {
+                        return;
+                    }
+                    
+                    let path;
+                    if (domain.startsWith('http://') || domain.startsWith('https://')) {
+                        try {
+                            let urlWithoutQuery = domain.split('?')[0];
+                            let url = new URL(urlWithoutQuery);
+                            path = decodeURIComponent(url.pathname);
+                        } catch (e) {
+                            path = domain.replace(/(https?:\/\/[^\/]+)/, '').split('?')[0];
+                        }
+                    } else {
+                        path = domain.split('?')[0];
+                    }
+                    
+                    try {
+                        path = decodeURIComponent(path);
+                    } catch (e) {}
+                    
+                    path = path.replace(/^\/+|\/+$/g, '');
+                    let segments = path.split('/');
+                    
+                    segments.forEach(segment => {
+                        segment = segment.trim();
+                        if (segment !== '') {
+                            words.add(segment);
+                        }
+                    });
+                } catch(e) {
+                    try {
+                        let decodedDomain = decodeURIComponent(domain.split('?')[0]);
+                        let segments = decodedDomain.replace(/^\/+|\/+$/g, '').split('/');
+                        segments.forEach(segment => {
+                            segment = segment.trim();
+                            if (segment !== '' && segment !== 'http:' && segment !== 'https:') {
+                                words.add(segment);
+                            }
+                        });
+                    } catch (decodeError) {
+                        let segments = domain.split('?')[0].replace(/^\/+|\/+$/g, '').split('/');
+                        segments.forEach(segment => {
+                            segment = segment.trim();
+                            if (segment !== '' && segment !== 'http:' && segment !== 'https:') {
+                                words.add(segment);
                             }
                         });
                     }
                 }
-            } catch(e) {
-                // Skip invalid URLs or formats
-            }
-        });
-        
-        let uniqueParams = Array.from(paramSet);
-        
-        if (uniqueParams.length === 0) {
-            if (foundParams) {
-                outputArea.value = "No valid parameters found in URLs";
+            });
+            
+            let wordsArray = Array.from(words);
+            
+            if (wordsArray.length === 0) {
+                outputArea.value = "No path segments found in the URLs";
+                document.getElementById('statsDisplay').innerHTML = '<span><i class="fas fa-exclamation-circle" style="color: var(--warning-color);"></i> No path words extracted</span>';
             } else {
-                outputArea.value = "No URLs with query parameters found. Parameters appear after ? in URLs.";
+                outputArea.value = wordsArray.join('\n');
+                document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-check-circle" style="color: var(--success-color);"></i> Extracted path words</span><span>${wordsArray.length} unique words</span>`;
             }
-            document.getElementById('statsDisplay').innerText = "No parameters extracted";
-        } else {
-            outputArea.value = uniqueParams.join('\n');
-            document.getElementById('statsDisplay').innerText = `Extracted ${uniqueParams.length} unique parameters`;
         }
-    }
-    
-    function extractPathWords() {
-        // Always use the original input for extracting path words
-        let inputArea = document.getElementById('inputArea');
-        let outputArea = document.getElementById('outputArea');
-        
-        // Always use input area content, never output area
-        let domains = inputArea.value.split('\n');
-        let filteredDomains = domains.filter(line => line.trim() !== '');
-        let words = new Set();
-        
-        if (filteredDomains.length === 0) {
-            outputArea.value = "No input provided. Please enter URLs in the input area.";
-            document.getElementById('statsDisplay').innerText = "No path words extracted";
-            return;
-        }
-        
-        filteredDomains.forEach(domain => {
-            try {
-                domain = domain.trim();
-                
-                // Skip standalone protocol prefixes
-                if (domain === 'http:' || domain === 'https:') {
-                    return;
-                }
-                
-                // Extract path from URL or use directly if it's already a path
-                let path;
-                if (domain.startsWith('http://') || domain.startsWith('https://')) {
-                    try {
-                        // Remove query string before parsing URL
-                        let urlWithoutQuery = domain.split('?')[0];
-                        let url = new URL(urlWithoutQuery);
-                        path = decodeURIComponent(url.pathname);
-                    } catch (e) {
-                        // If URL parsing fails, handle as path
-                        path = domain.replace(/(https?:\/\/[^\/]+)/, '').split('?')[0]; // Remove domain part and query string
-                    }
-                } else {
-                    path = domain.split('?')[0]; // Remove any query string part
-                }
-                
-                // Decode URL-encoded characters
-                try {
-                    path = decodeURIComponent(path);
-                } catch (e) {
-                    // If decoding fails, use the original path
-                }
-                
-                // Clean up the path and split into segments
-                path = path.replace(/^\/+|\/+$/g, ''); // Remove leading/trailing slashes
-                let segments = path.split('/');
-                
-                // Add each segment as a word
-                segments.forEach(segment => {
-                    segment = segment.trim();
-                    if (segment !== '') {
-                        words.add(segment);
-                    }
-                });
-            } catch(e) {
-                // If any error occurs, try to parse simple path segments
-                try {
-                    let decodedDomain = decodeURIComponent(domain.split('?')[0]);
-                    let segments = decodedDomain.replace(/^\/+|\/+$/g, '').split('/');
-                    segments.forEach(segment => {
-                        segment = segment.trim();
-                        if (segment !== '' && segment !== 'http:' && segment !== 'https:') {
-                            words.add(segment);
-                        }
-                    });
-                } catch (decodeError) {
-                    // If decoding fails, use original segments
-                    let segments = domain.split('?')[0].replace(/^\/+|\/+$/g, '').split('/');
-                    segments.forEach(segment => {
-                        segment = segment.trim();
-                        if (segment !== '' && segment !== 'http:' && segment !== 'https:') {
-                            words.add(segment);
-                        }
-                    });
-                }
+
+        function addPath() {
+            let pathToAdd = prompt('Enter path to be added (should start with "/"):');
+            if (pathToAdd) {
+                let inputArea = document.getElementById('inputArea');
+                let outputArea = document.getElementById('outputArea');
+                let domains = (outputArea.value || inputArea.value).split('\n');
+                let filteredDomains = domains.filter(line => line.trim() !== '');
+                let result = filteredDomains.map(domain => domain + pathToAdd);
+                outputArea.value = result.join('\n');
+                document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-check-circle" style="color: var(--success-color);"></i> Added path "${pathToAdd}"</span><span>${result.length} items</span>`;
             }
-        });
-        
-        let wordsArray = Array.from(words);
-        
-        if (wordsArray.length === 0) {
-            outputArea.value = "No path segments found in the URLs";
-            document.getElementById('statsDisplay').innerText = "No path words extracted";
-        } else {
-            outputArea.value = wordsArray.join('\n');
-            document.getElementById('statsDisplay').innerText = `Extracted ${wordsArray.length} unique path words`;
         }
-    }
-	
-    function addPath() {
-        let pathToAdd = prompt('Enter path to be added (should start with "/"):');
-        if (pathToAdd) {
+
+        function exportData(format) {
+            let outputArea = document.getElementById('outputArea');
+            let data = outputArea.value.split('\n').filter(line => line.trim() !== '');
+            
+            if (data.length === 0) {
+                alert('No data to export. Please generate some output first.');
+                return;
+            }
+            
+            if (format === 'csv') {
+                let csvContent = data.join('\r\n');
+                let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                let link = document.createElement("a");
+                let url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "bugbounty_output.csv");
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-download" style="color: var(--success-color);"></i> Exported to CSV</span><span>${data.length} items</span>`;
+            }
+            else if (format === 'json') {
+                let jsonContent = JSON.stringify(data, null, 2);
+                let blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
+                let link = document.createElement("a");
+                let url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "bugbounty_output.json");
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-download" style="color: var(--success-color);"></i> Exported to JSON</span><span>${data.length} items</span>`;
+            }
+        }
+
+        function openMultipleURLs() {
             let inputArea = document.getElementById('inputArea');
             let outputArea = document.getElementById('outputArea');
             let domains = (outputArea.value || inputArea.value).split('\n');
             let filteredDomains = domains.filter(line => line.trim() !== '');
-            let result = filteredDomains.map(domain => domain + pathToAdd);
-            outputArea.value = result.join('\n');
-            document.getElementById('statsDisplay').innerText = `Output contains ${result.length} items with added path`;
+            let unique = [...new Set(filteredDomains)];
+            
+            if (unique.length === 0) {
+                alert('No URLs to open. Please enter some URLs first.');
+                return;
+            }
+            
+            if (unique.length > 10) {
+                if (!confirm(`This will open ${unique.length} tabs. Are you sure you want to continue?`)) {
+                    return;
+                }
+            }
+            
+            unique.forEach(domain => {
+                window.open(domain.trim(), '_blank');
+            });
+            
+            document.getElementById('statsDisplay').innerHTML = `<span><i class="fas fa-external-link-alt" style="color: var(--success-color);"></i> Opened URLs</span><span>${unique.length} unique tabs</span>`;
         }
-    }
-
-    function exportData(format) {
-        let outputArea = document.getElementById('outputArea');
-        let data = outputArea.value.split('\n').filter(line => line.trim() !== '');
-        
-        if (format === 'csv') {
-            let csvContent = data.join('\r\n');
-            let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            let link = document.createElement("a");
-            let url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", "output.csv");
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            document.getElementById('statsDisplay').innerText = `Exported ${data.length} items to CSV`;
-        }
-        else if (format === 'json') {
-            let jsonContent = JSON.stringify(data);
-            let blob = new Blob([jsonContent], { type: 'application/json;charset=utf-8;' });
-            let link = document.createElement("a");
-            let url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", "output.json");
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            document.getElementById('statsDisplay').innerText = `Exported ${data.length} items to JSON`;
-        }
-    }
-
-    function openMultipleURLs() {
-        let inputArea = document.getElementById('inputArea');
-        let outputArea = document.getElementById('outputArea');
-        let domains = (outputArea.value || inputArea.value).split('\n');
-        let filteredDomains = domains.filter(line => line.trim() !== '');
-        let unique = [...new Set(filteredDomains)]; // remove duplicates
-        
-        unique.forEach(domain => {
-            // Open the domain in a new tab
-            window.open(domain, '_blank');
-        });
-        document.getElementById('statsDisplay').innerText = `Opened ${unique.length} unique URLs`;
-    }
-    
-    function toggleDarkMode() {
-        document.body.classList.toggle('dark-mode');
-        // Save preference to localStorage
-        if (document.body.classList.contains('dark-mode')) {
-            localStorage.setItem('darkMode', 'enabled');
-        } else {
-            localStorage.setItem('darkMode', 'disabled');
-        }
-    }
-</script>
+    </script>
 </body>
 </html>
