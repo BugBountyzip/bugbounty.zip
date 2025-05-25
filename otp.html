@@ -1,129 +1,985 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-0ZLYYNQ68Z');
-</script>
-<title>OTP Generator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://bugbounty.zip/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Generator - Multi-Format Security Tool</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0ZLYYNQ68Z');
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --bg-tertiary: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --navbar-height: 60px;
+            --transition-fast: 150ms ease;
+            --transition-normal: 300ms ease;
+        }
 
-.input-group {
+        /* Dark mode colors */
+        [data-theme="dark"] {
+            --primary-color: #818cf8;
+            --primary-hover: #6366f1;
+            --secondary-color: #a78bfa;
+            --success-color: #34d399;
+            --danger-color: #f87171;
+            --warning-color: #fbbf24;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        html {
+            height: 100%;
+            background-color: var(--bg-primary);
+            transition: background-color var(--transition-normal);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: all var(--transition-normal);
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--navbar-height);
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            justify-content: center;
+            padding: 0 2rem;
+            transition: all var(--transition-normal);
         }
 
-        .input-group input {
-            width: 30%;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
         }
 
-        .input-group button, .container button {
-            width: 30%;
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-right: 10px;
-            margin-bottom: 20px;
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-item a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+        }
+
+        .nav-item a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-secondary);
+            min-width: 200px;
+            box-shadow: var(--shadow-xl);
+            border-radius: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-normal);
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            border-radius: 0;
+        }
+
+        .dropdown-content a:first-child {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        .dropdown-content a:last-child {
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
             border: none;
-            color: white;
-            background-color: #4CAF50;
+            font-size: 1.5rem;
+            color: var(--text-primary);
             cursor: pointer;
-            border-radius: 5px;
+            padding: 0.5rem;
+            margin-left: auto;
         }
 
-        .input-group button:hover, .container button:hover {
-            background-color: #0056b3;
+        /* Main Container */
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: calc(var(--navbar-height) + 2rem) 1rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+            overflow-x: auto;
+            animation: fadeInUp 0.7s ease 0.1s both;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: var(--text-primary);
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        /* Tab Panels */
+        .tab-panel {
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Generator Card */
+        .generator-card {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        /* Input Groups */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Input Row */
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        .checkbox-group label {
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Buttons */
+        .button {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .button.primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .button.primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .button.secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .button.secondary:hover {
+            background: var(--border-color);
+        }
+
+        .button.success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .button.success:hover {
+            background: #059669;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* Output Area */
+        .output-section {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .output-count {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: all var(--transition-fast);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-xl);
+            transition: all var(--transition-normal);
+            z-index: 100;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon-link {
+            color: var(--text-secondary);
+            font-size: 2rem;
+            transition: all var(--transition-fast);
+            display: inline-block;
+        }
+
+        .icon-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: var(--navbar-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--navbar-height));
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                transition: left var(--transition-normal);
+                box-shadow: var(--shadow-xl);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                margin-top: 0.5rem;
+                margin-left: 1rem;
+            }
+
+            .dark-mode-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .tabs {
+                gap: 0.5rem;
+            }
+
+            .tab {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Alert */
+        .alert {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-xl);
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, 100%);
+            }
+            to {
+                transform: translate(-50%, 0);
+            }
+        }
+
+        /* Info Box */
+        .info-box {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .info-box i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .info-box p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0;
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/index.html" target="_blank">Home</a>
-  </div>
-  <div class="nav-item">
-    <div class="dropdown">
-      <a href="#">Tools</a>
-      <div class="dropdown-content">
-	    <a href="https://bugbounty.zip/RapidHand.html" target="_blank">Rapid-Hand</a>
-        <a href="https://bugbounty.zip/BoilOver.html" target="_blank">Boil Over</a>
-        <a href="https://bugbounty.zip/Hope.html" target="_blank">Hope</a>
-		<a href="https://bugbounty.zip/Evidence.html" target="_blank">Evidence</a>
-        <a href="https://bugbounty.zip/otp.html" target="_blank">OTP Generator</a>
-        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">UltraSoundScan</a>
-      </div>
-    </div>
-  </div>
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/About.html" target="_blank">About</a>
-  </div>
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/Patch.html" target="_blank">Patch Notes</a>
-  </div>
-</div>
-
-    <div class="container">
-        <div class="title">OTP Generator</div>
-        <div class="description">Generate a list of numbers from a range</div>
-        <div class="input-group">
-            <input type="number" id="fromNumber" placeholder="From">
-            <input type="number" id="toNumber" placeholder="To">
-            <button onclick="generateOTP()">Generate</button>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="https://bugbounty.zip" class="nav-logo">
+                <i class="fas fa-bug"></i>
+                BugBounty.Zip
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/index.html" target="_blank">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <a href="#">
+                        <i class="fas fa-tools"></i> Tools <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="https://bugbounty.zip/RapidHand.html" target="_blank">
+                            <i class="fas fa-hand-sparkles"></i> Rapid-Hand
+                        </a>
+                        <a href="https://bugbounty.zip/BoilOver.html" target="_blank">
+                            <i class="fas fa-fire"></i> Boil Over
+                        </a>
+                        <a href="https://bugbounty.zip/Hope.html" target="_blank">
+                            <i class="fas fa-dove"></i> Hope
+                        </a>
+                        <a href="https://bugbounty.zip/Evidence.html" target="_blank">
+                            <i class="fas fa-video"></i> Evidence
+                        </a>
+                        <a href="https://bugbounty.zip/otp.html" target="_blank">
+                            <i class="fas fa-key"></i> OTP Generator
+                        </a>
+                        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">
+                            <i class="fas fa-wave-square"></i> UltraSoundScan
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/About.html" target="_blank">
+                        <i class="fas fa-info-circle"></i> About
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/Patch.html" target="_blank">
+                        <i class="fas fa-clipboard-list"></i> Patch Notes
+                    </a>
+                </div>
+            </div>
         </div>
-        <textarea id="outputArea" placeholder="Your OTPs will appear here..." style="width: 100%; height: 100px;"></textarea>
-        <button onclick="copyToClipboard()">Copy to Clipboard</button>
-		
-		
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="title">OTP Generator</h1>
+            <p class="description">Generate secure one-time passwords, number sequences, and custom patterns for testing and security purposes</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('range')">
+                <i class="fas fa-list-ol"></i> Number Range
+            </button>
+            <button class="tab" onclick="switchTab('random')">
+                <i class="fas fa-random"></i> Random OTP
+            </button>
+        </div>
+
+        <!-- Tab Panels -->
+        <!-- Number Range Tab -->
+        <div id="range-panel" class="tab-panel active">
+            <div class="generator-card">
+                <h2 style="margin-bottom: 1.5rem;">Generate Number Sequence</h2>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="fromNumber">From Number</label>
+                        <input type="number" id="fromNumber" placeholder="Start value (e.g., 1000)" value="1000">
+                    </div>
+                    <div class="input-group">
+                        <label for="toNumber">To Number</label>
+                        <input type="number" id="toNumber" placeholder="End value (e.g., 9999)" value="9999">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="stepSize">Step Size</label>
+                    <input type="number" id="stepSize" placeholder="Increment value" value="1" min="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="padding">Padding Length</label>
+                    <input type="number" id="padding" placeholder="Minimum digits (e.g., 4)" value="4" min="0">
+                </div>
+
+                <div class="button-group">
+                    <button class="button primary" onclick="generateRange()">
+                        <i class="fas fa-play"></i> Generate Sequence
+                    </button>
+                    <button class="button secondary" onclick="clearOutput()">
+                        <i class="fas fa-eraser"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Random OTP Tab -->
+        <div id="random-panel" class="tab-panel">
+            <div class="generator-card">
+                <h2 style="margin-bottom: 1.5rem;">Generate Random OTPs</h2>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="otpLength">OTP Length</label>
+                        <input type="number" id="otpLength" placeholder="Number of digits" value="6" min="1" max="20">
+                    </div>
+                    <div class="input-group">
+                        <label for="otpCount">Number of OTPs</label>
+                        <input type="number" id="otpCount" placeholder="How many to generate" value="10" min="1">
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="button primary" onclick="generateRandomOTP()">
+                        <i class="fas fa-dice"></i> Generate OTPs
+                    </button>
+                    <button class="button secondary" onclick="clearOutput()">
+                        <i class="fas fa-eraser"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-section">
+            <div class="output-header">
+                <h3>Generated Output</h3>
+                <span class="output-count" id="outputCount">0 items</span>
+            </div>
+            <textarea id="outputArea" placeholder="Your generated codes will appear here..." readonly></textarea>
+            <div class="button-group">
+                <button class="button success" onclick="copyToClipboard()">
+                    <i class="fas fa-copy"></i> Copy to Clipboard
+                </button>
+                <button class="button secondary" onclick="downloadOutput()">
+                    <i class="fas fa-download"></i> Download as TXT
+                </button>
+            </div>
+        </div>
     </div>
-	
-	
-	</div>
-	
-	<div class="footer">
-  <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank">
-    <i class="fab fa-twitter-square"></i>
-  </a>
-  <a href="mailto:no-reply@nobugescapes.com" class="icon-link">
-    <i class="fas fa-envelope-square"></i>
-  </a>
-</div>
-<script src="https://bugbounty.zip/js/darkmode.js"></script>	
-</body>
 
-<script>
-    function generateOTP() {
-        const fromNumber = parseInt(document.getElementById('fromNumber').value);
-        const toNumber = parseInt(document.getElementById('toNumber').value);
-        const outputArea = document.getElementById('outputArea');
+    <!-- Alert -->
+    <div id="alert" class="alert"></div>
 
-        let otps = '';
-        for (let i = fromNumber; i <= toNumber; i++) {
-            otps += i + '\n';
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon" id="darkModeIcon"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="mailto:no-reply@nobugescapes.com" class="icon-link" aria-label="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://github.com" class="icon-link" target="_blank" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+        <p style="color: var(--text-tertiary); font-size: 0.875rem;">
+            © 2024 BugBounty.Zip. Built with <i class="fas fa-heart" style="color: var(--danger-color);"></i> for security researchers.
+        </p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
         }
 
-        outputArea.value = otps;
-    }
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (!navMenu.contains(event.target) && !mobileToggle.contains(event.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
 
-    function copyToClipboard() {
-        const outputArea = document.getElementById('outputArea');
-        outputArea.select();
-        document.execCommand('copy');
-        alert('OTPs copied to clipboard!');
-    }
-</script>
+        // Dark mode toggle
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                darkModeIcon.className = 'fas fa-moon';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                darkModeIcon.className = 'fas fa-sun';
+            }
+        }
+
+        // Initialize theme on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('darkModeIcon').className = 'fas fa-sun';
+            }
+        });
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all panels
+            const panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+            
+            // Remove active from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected panel
+            document.getElementById(`${tabName}-panel`).classList.add('active');
+            
+            // Activate selected tab
+            event.target.closest('.tab').classList.add('active');
+        }
+
+        // Show alert
+        function showAlert(message, duration = 3000) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, duration);
+        }
+
+        // Update output count
+        function updateOutputCount() {
+            const outputArea = document.getElementById('outputArea');
+            const lines = outputArea.value.split('\n').filter(line => line.trim() !== '');
+            document.getElementById('outputCount').textContent = `${lines.length} items`;
+        }
+
+        // Clear output
+        function clearOutput() {
+            document.getElementById('outputArea').value = '';
+            updateOutputCount();
+        }
+
+        // Generate number range
+        function generateRange() {
+            const from = parseInt(document.getElementById('fromNumber').value) || 0;
+            const to = parseInt(document.getElementById('toNumber').value) || 0;
+            const step = parseInt(document.getElementById('stepSize').value) || 1;
+            const padding = parseInt(document.getElementById('padding').value) || 0;
+            
+            if (from > to) {
+                showAlert('From number must be less than or equal to To number');
+                return;
+            }
+            
+            let output = [];
+            for (let i = from; i <= to; i += step) {
+                output.push(i.toString().padStart(padding, '0'));
+            }
+            
+            document.getElementById('outputArea').value = output.join('\n');
+            updateOutputCount();
+            showAlert('Number sequence generated successfully!');
+        }
+
+        // Generate random OTP
+        function generateRandomOTP() {
+            const length = parseInt(document.getElementById('otpLength').value) || 6;
+            const count = parseInt(document.getElementById('otpCount').value) || 10;
+            
+            let chars = '0123456789';
+            
+            let output = [];
+            for (let i = 0; i < count; i++) {
+                let otp = '';
+                for (let j = 0; j < length; j++) {
+                    otp += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                output.push(otp);
+            }
+            
+            document.getElementById('outputArea').value = output.join('\n');
+            updateOutputCount();
+            showAlert('Random OTPs generated successfully!');
+        }
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            const outputArea = document.getElementById('outputArea');
+            if (!outputArea.value) {
+                showAlert('Nothing to copy!');
+                return;
+            }
+            
+            outputArea.select();
+            document.execCommand('copy');
+            
+            // Modern clipboard API fallback
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(outputArea.value)
+                    .then(() => showAlert('Copied to clipboard!'))
+                    .catch(() => showAlert('Failed to copy'));
+            } else {
+                showAlert('Copied to clipboard!');
+            }
+        }
+
+        // Download output as text file
+        function downloadOutput() {
+            const outputArea = document.getElementById('outputArea');
+            if (!outputArea.value) {
+                showAlert('Nothing to download!');
+                return;
+            }
+            
+            const blob = new Blob([outputArea.value], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `otp_generated_${new Date().toISOString().slice(0, 10)}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showAlert('File downloaded successfully!');
+        }
+    </script>
+</body>
 </html>
+                    
