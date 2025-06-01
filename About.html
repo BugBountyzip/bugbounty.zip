@@ -1,132 +1,837 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - BugBounty.Zip</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0ZLYYNQ68Z');
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  gtag('config', 'G-0ZLYYNQ68Z');
-</script>
-<title>About</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://bugbounty.zip/css/styles.css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --bg-tertiary: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --navbar-height: 60px;
+            --transition-fast: 150ms ease;
+            --transition-normal: 300ms ease;
+        }
 
-<style>
- 
-		.description p {
-    margin-bottom: 1em; /* This creates a margin at the bottom of each paragraph inside the .description div */
-}
+        /* Dark mode colors */
+        [data-theme="dark"] {
+            --primary-color: #818cf8;
+            --primary-hover: #6366f1;
+            --secondary-color: #a78bfa;
+            --success-color: #34d399;
+            --danger-color: #f87171;
+            --warning-color: #fbbf24;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
 
-@media screen and (max-width: 600px) {
-    .title {
-        font-size: 24px;
-    }
-    .description {
-        font-size: 16px;
-    }
-}
+        html {
+            height: 100%;
+            background-color: var(--bg-primary);
+            transition: background-color var(--transition-normal);
+        }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-normal);
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--navbar-height);
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+            transition: all var(--transition-normal);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-item a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+        }
+
+        .nav-item a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-secondary);
+            min-width: 200px;
+            box-shadow: var(--shadow-xl);
+            border-radius: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-normal);
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            border-radius: 0;
+        }
+
+        .dropdown-content a:first-child {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        .dropdown-content a:last-child {
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-left: auto;
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: calc(var(--navbar-height) + 2rem) 1rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* Content Sections */
+        .content-section {
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            transform: translateX(-100%);
+            transition: transform var(--transition-normal);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-color);
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Story Section */
+        .story-section {
+            background: var(--bg-secondary);
+            padding: 3rem;
+            border-radius: 1.5rem;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .story-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .story-content p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .story-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Values Section */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .value-item {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-primary);
+            border-radius: 1rem;
+            border: 2px solid var(--border-color);
+            transition: all var(--transition-normal);
+        }
+
+        .value-item:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .value-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .value-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .value-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 3rem;
+            border-radius: 1.5rem;
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all var(--transition-normal);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-xl);
+            transition: all var(--transition-normal);
+            z-index: 100;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon-link {
+            color: var(--text-secondary);
+            font-size: 2rem;
+            transition: all var(--transition-fast);
+            display: inline-block;
+        }
+
+        .icon-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: var(--navbar-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--navbar-height));
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                transition: left var(--transition-normal);
+                box-shadow: var(--shadow-xl);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                margin-top: 0.5rem;
+                margin-left: 1rem;
+            }
+
+            .dark-mode-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .container {
+                padding-top: calc(var(--navbar-height) + 1rem);
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .story-section {
+                padding: 2rem;
+            }
+
+            .cta-section {
+                padding: 2rem;
+            }
+
+            .cta-title {
+                font-size: 1.5rem;
+            }
+        }
     </style>
-
 </head>
 <body>
-     <div class="navbar">
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/index.html" target="_blank">Home</a>
-  </div>
-  <div class="nav-item">
-    <div class="dropdown">
-      <a href="#">Tools</a>
-      <div class="dropdown-content">
-        <a href="https://bugbounty.zip/RapidHand.html" target="_blank">Rapid-Hand</a>
-          <a href="https://bugbounty.zip/BoilOver.html" target="_blank">Boil Over</a>
-          <a href="https://bugbounty.zip/Hope.html" target="_blank">Hope</a>
-          <a href="https://bugbounty.zip/Evidence.html" target="_blank">Evidence</a>
-          <a href="https://bugbounty.zip/otp.html" target="_blank">OTP Generator</a>
-          <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">UltraSoundScan</a>
-      </div>
-    </div>
-  </div>
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/About.html" target="_blank">About</a>
-  </div>
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/Patch.html" target="_blank">Patch Notes</a>
-  </div>
-</div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="https://bugbounty.zip" class="nav-logo">
+                <i class="fas fa-bug"></i>
+                BugBounty.Zip
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/index.html" target="_blank">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <a href="#">
+                        <i class="fas fa-tools"></i> Tools <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="https://bugbounty.zip/RapidHand.html" target="_blank">
+                            <i class="fas fa-hand-sparkles"></i> Rapid-Hand
+                        </a>
+                        <a href="https://bugbounty.zip/BoilOver.html" target="_blank">
+                            <i class="fas fa-fire"></i> Boil Over
+                        </a>
+                        <a href="https://bugbounty.zip/Hope.html" target="_blank">
+                            <i class="fas fa-dove"></i> Hope
+                        </a>
+                        <a href="https://bugbounty.zip/Evidence.html" target="_blank">
+                            <i class="fas fa-search"></i> Evidence
+                        </a>
+                        <a href="https://bugbounty.zip/otp.html" target="_blank">
+                            <i class="fas fa-key"></i> OTP Generator
+                        </a>
+                        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">
+                            <i class="fas fa-wave-square"></i> UltraSoundScan
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/About.html" target="_blank">
+                        <i class="fas fa-info-circle"></i> About
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/Patch.html" target="_blank">
+                        <i class="fas fa-clipboard-list"></i> Patch Notes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
     <div class="container">
-        <div class="title">About BugBounty.Zip</div>
-<div class="description">
-    <p>Welcome to BugBounty.Zip, your comprehensive toolbox specifically designed for your domain operations, while ensuring the utmost importance is placed on privacy and security. We are committed to simplifying and enhancing the daily processes of bug bounty hunters, penetration testers, and cybersecurity enthusiasts worldwide, all within the secure environment of your local machine.</p>
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="title">About BugBounty.Zip</h1>
+            <p class="subtitle">Privacy-first tools built for security researchers who take their work seriously</p>
+        </div>
 
-    <p>At BugBounty.Zip, we provide you with an array of functionalities programmed through JavaScript, thus ensuring that no information leaves your local system. Our platform allows you to seamlessly add protocols to your domains, conduct surgical removal or replacement of specific words, and extract endpoints with maximum accuracy and efficiency. The magic of these operations is that everything happens locally on your machine, guaranteeing your data's confidentiality and security.</p>
+        <!-- Features Section -->
+        <div class="content-section">
+            <h2 class="section-title">Why Choose BugBounty.Zip?</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="feature-title">100% Privacy Focused</h3>
+                    <p class="feature-description">All operations run locally in your browser. Your data never leaves your machine, ensuring complete confidentiality and security for sensitive reconnaissance work.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="feature-title">Lightning Fast Processing</h3>
+                    <p class="feature-description">Process thousands of domains instantly with our optimized JavaScript engine. No server delays, no rate limits, just pure speed when you need it.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-toolbox"></i>
+                    </div>
+                    <h3 class="feature-title">Comprehensive Toolkit</h3>
+                    <p class="feature-description">From protocol management to endpoint extraction, parameter parsing to wordlist generation—everything you need for efficient domain operations in one place.</p>
+                </div>
+            </div>
+        </div>
 
+        <!-- Story Section -->
+        <div class="content-section">
+            <h2 class="section-title">Our Story</h2>
+            <div class="story-section">
+                <div class="story-content">
+                    <p>BugBounty.Zip was born from the real-world needs of security researchers who demanded better, faster, and more secure tools for their daily operations. We understood the frustration of uploading sensitive domain lists to online services, waiting for slow server responses, and worrying about data privacy.</p>
+                    
+                    <p>That's why we built a comprehensive suite of domain manipulation tools that operate entirely within your browser. No uploads, no external servers, no tracking—just powerful functionality at your fingertips. Whether you're a seasoned bug bounty hunter, a penetration tester, or a cybersecurity enthusiast, our tools are designed to streamline your workflow while maintaining the highest standards of operational security.</p>
+                    
+                    <p>Every feature we add, every optimization we make, is driven by feedback from our community of security professionals. We're not just building tools; we're crafting solutions that make your reconnaissance more efficient, your data more secure, and your findings more impactful.</p>
+                </div>
+            </div>
+        </div>
 
-    <p>Your satisfaction is our success. We hope you will find our services as enjoyable and practical as we found pleasure in creating them for you If you come across any user experience or security bugs, or wish to request a new feature, we encourage you to reach out to us at <a href="mailto:no-reply@nobugescapes.com">no-reply@nobugescapes.com</a> Your feedback is vital in our journey to continuous improvement and in ensuring that BugBounty.Zip remains your go-to solution for secure, efficient, and local domain operations.</p>
-	
-</div>
+        <!-- Values Section -->
+        <div class="content-section">
+            <h2 class="section-title">Our Core Values</h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3 class="value-title">Privacy First</h3>
+                    <p class="value-description">Your data stays yours. Always local, never uploaded.</p>
+                </div>
+                
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3 class="value-title">Performance</h3>
+                    <p class="value-description">Instant results with zero latency or server delays.</p>
+                </div>
+                
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="value-title">Community Driven</h3>
+                    <p class="value-description">Built by researchers, for researchers, with continuous improvements.</p>
+                </div>
+                
+                <div class="value-item">
+                    <div class="value-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="value-title">Open Innovation</h3>
+                    <p class="value-description">Transparent development with community feedback at its core.</p>
+                </div>
+            </div>
+        </div>
 
-	
-	<div class="footer">
-  <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank">
-    <i class="fab fa-twitter-square"></i>
-  </a>
-  <a href="mailto:no-reply@nobugescapes.com" class="icon-link">
-    <i class="fas fa-envelope-square"></i>
-  </a>
-</div>
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <div class="cta-content">
+                <h2 class="cta-title">Found a Bug or Have a Feature Request?</h2>
+                <p class="cta-description">We're constantly improving BugBounty.Zip based on your feedback. Help us make it even better!</p>
+                <a href="mailto:no-reply@nobugescapes.com" class="cta-button">
+                    <i class="fas fa-envelope"></i>
+                    Get in Touch
+                </a>
+            </div>
+        </div>
+    </div>
 
-<script>
-function toggleDarkMode() {
-    var element = document.body;
-    element.classList.toggle("dark-mode");
-    // Save the current class list in localStorage.
-    localStorage.setItem('darkModeStatus', element.classList);
-}
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon" id="darkModeIcon"></i>
+    </button>
 
-window.onload = function() {
-    var savedClassList = localStorage.getItem('darkModeStatus');
-    let darkMode = localStorage.getItem('darkMode');
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="mailto:no-reply@nobugescapes.com" class="icon-link" aria-label="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://github.com/bugbountyzip" class="icon-link" target="_blank" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+        <p style="color: var(--text-tertiary); font-size: 0.875rem;">
+            © 2024 BugBounty.Zip. Built with <i class="fas fa-heart" style="color: var(--danger-color);"></i> for security researchers.
+        </p>
+    </footer>
 
-    // Apply dark mode if it was previously enabled
-    if ((savedClassList && savedClassList.includes('dark-mode')) || (darkMode === 'enabled')) {
-        document.body.classList.add('dark-mode');
-    }
-};
-
-
-// On page load, check if dark mode was previously enabled
-    window.onload = function() {
-        let darkMode = localStorage.getItem('darkMode');
-
-        // Apply dark mode if it was previously enabled
-        if (darkMode === 'enabled') {
-            document.body.classList.add('dark-mode');
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
         }
-    };
 
-    function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (!navMenu.contains(event.target) && !mobileToggle.contains(event.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
 
-    // Save the current class list in localStorage.
-    localStorage.setItem('darkModeStatus', document.body.classList);
+        // Dark mode toggle with icon change
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                darkModeIcon.className = 'fas fa-moon';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                darkModeIcon.className = 'fas fa-sun';
+            }
+        }
 
-    // Store the current state in local storage
-    let darkMode = localStorage.getItem('darkMode');
-    if (darkMode !== 'enabled') {
-        localStorage.setItem('darkMode', 'enabled');
-    } else {
-        localStorage.setItem('darkMode', null);
-    }
-}
-
-	
-	
-</script>
-
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('darkModeIcon').className = 'fas fa-sun';
+            }
+        });
+    </script>
 </body>
 </html>
