@@ -1,270 +1,1203 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patch Notes - BugBounty.Zip</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0ZLYYNQ68Z');
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  gtag('config', 'G-0ZLYYNQ68Z');
-</script>
-<title>Updates</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://bugbounty.zip/css/styles.css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --info-color: #3b82f6;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --bg-tertiary: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --navbar-height: 60px;
+            --transition-fast: 150ms ease;
+            --transition-normal: 300ms ease;
+        }
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-}
+        /* Dark mode colors */
+        [data-theme="dark"] {
+            --primary-color: #818cf8;
+            --primary-hover: #6366f1;
+            --secondary-color: #a78bfa;
+            --success-color: #34d399;
+            --danger-color: #f87171;
+            --warning-color: #fbbf24;
+            --info-color: #60a5fa;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
 
-.title {
-    text-align: center;
-    font-size: 30px;
-    margin-bottom: 20px;
-}
+        html {
+            height: 100%;
+            background-color: var(--bg-primary);
+            transition: background-color var(--transition-normal);
+        }
 
-.description {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 40px;
-}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-normal);
+        }
 
-.description h3 {
-    font-size: 24px; 
-    margin-bottom: 10px;
-}
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--navbar-height);
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+            transition: all var(--transition-normal);
+        }
 
-.description ul {
-    margin-bottom: 30px; 
-}
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
 
-.description li {
-    text-align: justify;
-}
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+        }
 
-@media screen and (max-width: 600px) {
-  .container {
-    width: 100%;
-  }
+        .nav-item {
+            position: relative;
+        }
 
-  .title {
-    font-size: 24px; 
-  }
+        .nav-item a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+        }
 
-  .description {
-    font-size: 12px; 
-  }
-}
+        .nav-item a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
 
+        .dropdown {
+            position: relative;
+        }
 
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-secondary);
+            min-width: 200px;
+            box-shadow: var(--shadow-xl);
+            border-radius: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-normal);
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
 
-</style>
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
 
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            border-radius: 0;
+        }
 
+        .dropdown-content a:first-child {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        .dropdown-content a:last-child {
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-left: auto;
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: calc(var(--navbar-height) + 2rem) 1rem 2rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* Latest Update Banner */
+        .latest-update {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1.5rem;
+            border-radius: 1rem;
+            color: white;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .latest-update::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.3; }
+        }
+
+        .latest-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .latest-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .latest-date {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .latest-description {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* Patch Timeline */
+        .patch-timeline {
+            position: relative;
+            padding-left: 2rem;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .patch-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        /* Patch Entry */
+        .patch-entry {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-left: 2rem;
+        }
+
+        .patch-entry::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 3px solid var(--bg-primary);
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .patch-date {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .patch-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--bg-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .patch-badge.new {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .patch-badge.deprecated {
+            background: var(--warning-color);
+            color: white;
+            border-color: var(--warning-color);
+        }
+
+        .patch-content {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition-normal);
+        }
+
+        .patch-content:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+
+        .patch-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .patch-item {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: all var(--transition-fast);
+        }
+
+        .patch-item:last-child {
+            border-bottom: none;
+        }
+
+        .patch-item:hover {
+            padding-left: 0.5rem;
+        }
+
+        .patch-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .patch-icon.feature {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .patch-icon.fix {
+            background: var(--info-color);
+            color: white;
+        }
+
+        .patch-icon.improvement {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .patch-icon.security {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .patch-text {
+            flex: 1;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .patch-text a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .patch-text a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-xl);
+            transition: all var(--transition-normal);
+            z-index: 100;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon-link {
+            color: var(--text-secondary);
+            font-size: 2rem;
+            transition: all var(--transition-fast);
+            display: inline-block;
+        }
+
+        .icon-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: var(--navbar-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--navbar-height));
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                transition: left var(--transition-normal);
+                box-shadow: var(--shadow-xl);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                margin-top: 0.5rem;
+                margin-left: 1rem;
+            }
+
+            .dark-mode-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .container {
+                padding-top: calc(var(--navbar-height) + 1rem);
+            }
+
+            .patch-timeline {
+                padding-left: 1rem;
+            }
+
+            .patch-timeline::before {
+                display: none;
+            }
+
+            .patch-entry {
+                padding-left: 0;
+            }
+
+            .patch-entry::before {
+                display: none;
+            }
+
+            .patch-content {
+                padding: 1rem;
+            }
+
+            .latest-update {
+                padding: 1rem;
+            }
+
+            .patch-date {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
 </head>
 <body>
-     <div class="navbar">
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/index.html" target="_blank">Home</a>
-  </div>
-  <div class="nav-item">
-    <div class="dropdown">
-      <a href="#">Tools</a>
-      <div class="dropdown-content">
-        <a href="https://bugbounty.zip/RapidHand.html" target="_blank">Rapid-Hand</a>
-          <a href="https://bugbounty.zip/BoilOver.html" target="_blank">Boil Over</a>
-          <a href="https://bugbounty.zip/Hope.html" target="_blank">Hope</a>
-          <a href="https://bugbounty.zip/Evidence.html" target="_blank">Evidence</a>
-          <a href="https://bugbounty.zip/otp.html" target="_blank">OTP Generator</a>
-          <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">UltraSoundScan</a>
-      </div>
-    </div>
-  </div>
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/About.html" target="_blank">About</a>
-  </div>
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/Patch.html" target="_blank">Patch Notes</a>
-  </div>
-</div>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="https://bugbounty.zip" class="nav-logo">
+                <i class="fas fa-bug"></i>
+                BugBounty.Zip
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/index.html" target="_blank">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <a href="#">
+                        <i class="fas fa-tools"></i> Tools <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="https://bugbounty.zip/RapidHand.html" target="_blank">
+                            <i class="fas fa-hand-sparkles"></i> Rapid-Hand
+                        </a>
+                        <a href="https://bugbounty.zip/BoilOver.html" target="_blank">
+                            <i class="fas fa-fire"></i> Boil Over
+                        </a>
+                        <a href="https://bugbounty.zip/Hope.html" target="_blank">
+                            <i class="fas fa-dove"></i> Hope
+                        </a>
+                        <a href="https://bugbounty.zip/Evidence.html" target="_blank">
+                            <i class="fas fa-search"></i> Evidence
+                        </a>
+                        <a href="https://bugbounty.zip/otp.html" target="_blank">
+                            <i class="fas fa-key"></i> OTP Generator
+                        </a>
+                        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">
+                            <i class="fas fa-wave-square"></i> UltraSoundScan
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/About.html" target="_blank">
+                        <i class="fas fa-info-circle"></i> About
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/Patch.html" target="_blank">
+                        <i class="fas fa-clipboard-list"></i> Patch Notes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
     <div class="container">
-    <div class="title">Patch Notes</div>
-    <div class="description">
-        <p>Last Updated: 2025-04-27</p>
-<h3>2025-04-27</h3>
-<ul>
-  <li>Major update to the quick actions with improved statistics and data handling.</li>
-  <li>Added item counting feature that shows the number of items in the input/output box.</li>
-  <li>Added new "Extract Path Words" function that breaks URL paths into individual segments.</li>
-  <li>Fixed URL-encoding issues: the tool now properly decodes URL-encoded characters when processing.</li>
-  <li>Improved duplicate removal with statistics showing how many duplicates were removed.</li>
-  <li>Enhanced parameter extraction to remove duplicates and display unique parameters only.</li>
-  <li>All extraction functions now consistently use the original input box data for more predictable behavior.</li>
-</ul>
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="title">Patch Notes</h1>
+            <p class="subtitle">Track all updates, fixes, and new features added to BugBounty.Zip</p>
+        </div>
 
-<h3>2023-08-11</h3>
-<ul>
-  <li>Introduced 'Evidence': a screen recorder with audio and mic support. Recordings are saved directly to the user's local machine.</li>
-  <li>Fixed a bug on the Replace function. Thanks to <a href="https://twitter.com/0xNasser_" target="_blank">@0xNasser_</a> for his valuable contribution.</li>
-</ul>
+        <!-- Latest Update Banner -->
+        <div class="latest-update">
+            <div class="latest-content">
+                <div class="latest-label">
+                    <i class="fas fa-bolt"></i>
+                    Latest Update
+                </div>
+                <div class="latest-date">June 1, 2025</div>
+                <div class="latest-description">Major UI overhaul with modern design, improved performance, and better user experience across all tools.</div>
+            </div>
+        </div>
 
+        <!-- Patch Timeline -->
+        <div class="patch-timeline">
+            <!-- June 1, 2025 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">
+                    2025-06-01
+                    <span class="patch-badge new"><i class="fas fa-sparkles"></i> New</span>
+                </div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <div class="patch-text">Complete UI redesign with modern dark/light theme support and smooth animations throughout the platform.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="patch-text">Significant performance improvements across all tools with optimized JavaScript execution and reduced memory usage.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="patch-text">Enhanced mobile responsiveness with touch-optimized controls and better viewport handling.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-palette"></i>
+                            </div>
+                            <div class="patch-text">New color scheme with improved contrast ratios for better accessibility and reduced eye strain.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed multiple UI inconsistencies and improved error handling across all tools.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-bars"></i>
+                            </div>
+                            <div class="patch-text">Redesigned navigation with dropdown menus and better tool organization for easier access.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon deprecated">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="patch-text">Deprecated UltraSoundJS Scanner. A more powerful JavaScript analysis tool is coming soon with advanced scanning capabilities.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-        <h3>2023-07-30</h3>
+            <!-- April 27, 2025 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2025-04-27</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Major update to the quick actions with improved statistics and data handling.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Added item counting feature that shows the number of items in the input/output box.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Added new "Extract Path Words" function that breaks URL paths into individual segments.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed URL-encoding issues: the tool now properly decodes URL-encoded characters when processing.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Improved duplicate removal with statistics showing how many duplicates were removed.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Enhanced parameter extraction to remove duplicates and display unique parameters only.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">All extraction functions now consistently use the original input box data for more predictable behavior.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-<ul>
-  <li>Fixed a bug on Rapid Hand where it wasn't functioning correctly. The issue arose when users input a URL without any parameters. Thanks to <a href="https://twitter.com/Az7rb" target="_blank">@Az7rb</a>'s valuable contribution.</li>
+            <!-- August 11, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-08-11</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Introduced 'Evidence': a screen recorder with audio and mic support. Recordings are saved directly to the user's local machine.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed a bug on the Replace function. Thanks to <a href="https://twitter.com/0xNasser_" target="_blank">@0xNasser_</a> for his valuable contribution.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-  <li>Implemented automatic removal of URLs without any parameters from the Rapid Hand output. Thanks to <a href="https://twitter.com/Az7rb" target="_blank">@Az7rb</a>'s valuable contribution.</li>
+            <!-- July 30, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-07-30</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed a bug on Rapid Hand where it wasn't functioning correctly when users input a URL without parameters. Thanks to <a href="https://twitter.com/Az7rb" target="_blank">@Az7rb</a>'s valuable contribution.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Implemented automatic removal of URLs without any parameters from the Rapid Hand output. Thanks to <a href="https://twitter.com/Az7rb" target="_blank">@Az7rb</a>'s valuable contribution.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Enhanced the results message for better clarity and accuracy.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Upgraded the website's input/output boxes with subtle shadows, making the experience more visually appealing and user-friendly.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Introducing Hope - a tool to scan URLs for potential vulnerable parameters, with a focus on OWASP's top 25 vulnerable parameters.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-  <li>Enhanced the results message for better clarity and accuracy.</li>
+            <!-- July 9, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-07-09</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Presenting Boil Over, a tool designed to extract root domains from subdomains. Please be aware of its limitations when dealing with top-level domains such as "example.com.uk".</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-  <li>We've upgraded the website's input/output boxes with subtle shadows, making the experience more visually appealing and user-friendly.</li>
+            <!-- July 7, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-07-07</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed a bug in the tool's parameter injection functionality. Previously, only the first parameter was being injected. Thanks to <a href="https://twitter.com/c0nqr0r" target="_blank">@c0nqr0r</a>'s valuable feedback.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Incorporated a new filter mechanism to exclude certain parameters from being injected. This was suggested by <a href="https://twitter.com/c0nqr0r" target="_blank">@c0nqr0r</a> to provide better control over input parameters.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-  <li>Introducing Hope - a tool to scan URLs for potential vulnerable parameters, with a focus on OWASP's top 25 vulnerable parameters.</li>
-</ul>
+            <!-- July 3, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-07-03</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Added new feature: Rapid-Hand for faster payload injection.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Integrated "Open All URLs" function with a protective limit set at 50 URLs. This can be bypassed by activating Developer mode through repeated button clicks.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed the URI malformed bug in the URL decode function.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Introduced the ability to Payload encode/decode directly.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Added Copy to Clipboard and Export buttons for quick sharing and testing of output.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Integrated Google Analytics to better understand website performance.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Missing Pages Titles Added.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed the "Remove Duplicates" function to correctly handle leading and trailing spaces. Thanks to <a href="https://twitter.com/TanmayLP7" target="_blank">@TanmayLP7</a> for reporting this issue.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
+            <!-- July 1, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-07-01</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Added a new button in the user interface that enables users to append a specific path to entered domains/URLs.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Enhanced the user prompt in the 'Add Path' function to clearly indicate that the entered path should start with a '/'.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-<h3>2023-07-09</h3>
-  
-  <ul>
-<li>Presenting Boil Over, a tool designed to extract root domains from subdomains. Please be aware of its limitations when dealing with top-level domains such as "example.com.uk".</li>    
-  </ul>
-  
-  <h3>2023-07-07</h3>
-  
-  <ul>
-    <li>Fixed a bug in the tool's parameter injection functionality. Previously, only the first parameter was being injected, while the rest of the parameters from user input were ignored. Thanks to <a href="https://twitter.com/c0nqr0r" target="_blank">@c0nqr0r</a>'s valuable feedback, this issue has been identified and resolved.</li>
-    
-    <li>Incorporated a new filter mechanism to exclude certain parameters from being injected. This enhancement was suggested by <a href="https://twitter.com/c0nqr0r" target="_blank">@c0nqr0r</a> to provide better control over the input parameters and prevent unwanted injection. The filter ensures that only the intended parameters are processed by the tool.</li>
-  </ul>
-		
-		<h3>2023-07-03</h3>
-    <ul>
-        <li>Added new feature: Rapid-Hand for faster payload injection.</li>
-		<li>Integrated "Open All URLs" function with a protective limit set at 50 URLs. This can be bypassed by activating Developer mode through repeated button clicks.</li>
-        <li>Fixed the URI malformed bug in the URL decode function.</li>
-        <li>Introduced the ability to Payload encode/decode directly </li>
-        <li>Added a Copy to Clipboard And Export buttons for quick sharing and testing of output.</li>
-		<li>Integrated  Google Analytics to better understand website performance.</li>
-		<li>Missing Pages Titles Added</li>
-		<li>Fixed the "Remove Duplicates" function to correctly handle leading and trailing spaces as the same entry when removing duplicates, providing a more accurate output. We thank <a href="https://twitter.com/TanmayLP7" target="_blank">@TanmayLP7</a> for reporting this issue.</li>
-    </ul>
-		
-		<h3>2023-07-01</h3>
-<ul>
-    <li>Added a new button in the user interface that enables users to append a specific path to entered domains/URLs.</li>
-    <li>Enhanced the user prompt in the 'Add Path' function to clearly indicate that the entered path should start with a '/'.</li>
-</ul>
+            <!-- June 30, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-06-30</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Moved large CSS styles to an external stylesheet to reduce HTML file size and improve page load speed.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Corrected the color issue in the dropdown menu. The text for "OTP Generator" and "UltraScan" now correctly appears in black instead of white.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Updated CSS rules for better specificity and minimal style conflicts.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Updated usage of !important in CSS for better style control and less conflicts.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-		
-<h3>2023-06-30</h3>
-<ul>
-    <li>Moved large CSS styles to an external stylesheet to reduce the size of the HTML file and improve page load speed.</li>
-    <li>Corrected the color issue in the dropdown menu of the navigation bar. The text for "OTP Generator" and "UltraScan" now correctly appears in black instead of white.</li>
-    <li>Updated the CSS rules for the dropdown links to ensure the color setting is specific and does not get overwritten by other styles.</li>
-    <li>Improved CSS selectors for better specificity and minimal style conflicts.</li>
-    <li>Updated usage of `!important` in CSS for better style control and less style conflicts.</li>
-</ul>
+            <!-- June 29, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-06-29</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Added the "UltraSound Source Scan" feature to extract endpoints from user input.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed the display of extracted endpoints to avoid extra HTML tags and present each endpoint on a new line.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Introduced the "Export Results" button to allow users to save their scan results in a .txt file.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Adjusted UI elements such as the "Run UltraSound Scan" and "Export Results" buttons for better alignment and aesthetics.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-</ul>
-		
-		<h3>2023-06-29</h3>
-<ul>
-    <li>Added the "UltraSound Source Scan" feature to extract endpoints from user input.</li>
-    <li>Fixed the display of extracted endpoints to avoid extra HTML tags and present each endpoint on a new line.</li>
-    <li>Introduced the "Export Results" button to allow users to save their scan results in a .txt file.</li>
-    <li>Adjusted UI elements such as the "Run UltraSound Scan" and "Export Results" buttons for better alignment and aesthetics.</li>
-</ul>
-        <h3>2023-06-28</h3>
-        <ul>
-            <li>Implemented the about page with information about BugBounty.zip</li>
-            <li>Fixed dark mode compatibility across different pages</li>
-            <li>Finalized the OTP generation page with copy functionality</li>
-            <li>Enhanced mobile responsiveness</li>
-			<li>Fixed a bug where dark mode was persistently enabled on certain pages, even after attempting to disable it.</li>
-        </ul>
+            <!-- June 28, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-06-28</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Implemented the about page with information about BugBounty.zip.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed dark mode compatibility across different pages.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Finalized the OTP generation page with copy functionality.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Enhanced mobile responsiveness.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed a bug where dark mode was persistently enabled on certain pages, even after attempting to disable it.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-        <h3>2023-06-27</h3>
-        <ul>
-            <li>Created the OTP generator page</li>
-            <li>Improved UI for mobile devices</li>
-            <li>Fixed navigation bar alignment on mobile devices</li>
-        </ul>
+            <!-- June 27, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-06-27</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Created the OTP generator page.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon improvement">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="patch-text">Improved UI for mobile devices.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon fix">
+                                <i class="fas fa-bug"></i>
+                            </div>
+                            <div class="patch-text">Fixed navigation bar alignment on mobile devices.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-        <h3>2023-06-26</h3>
-        <ul>
-            <li>Integrated dark mode across the website</li>
-        </ul>
+            <!-- June 26, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-06-26</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Integrated dark mode across the website.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-        <h3>2023-06-25</h3>
-        <ul>
-            <li>Release of bugbounty.zip</li>
-			<li>Added More bugs to fix later.</li>
-        </ul>
+            <!-- June 25, 2023 Update -->
+            <div class="patch-entry">
+                <div class="patch-date">2023-06-25</div>
+                <div class="patch-content">
+                    <ul class="patch-list">
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Release of bugbounty.zip.</div>
+                        </li>
+                        <li class="patch-item">
+                            <div class="patch-icon feature">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <div class="patch-text">Added More bugs to fix later.</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon" id="darkModeIcon"></i>
+    </button>
 
-	
-	<div class="footer">
-  <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank">
-    <i class="fab fa-twitter-square"></i>
-  </a>
-  <a href="mailto:no-reply@nobugescapes.com" class="icon-link">
-    <i class="fas fa-envelope-square"></i>
-  </a>
-</div>
-<script>
-function toggleDarkMode() {
-    var element = document.body;
-    element.classList.toggle("dark-mode");
-    // Save the current class list in localStorage.
-    localStorage.setItem('darkModeStatus', element.classList);
-}
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="mailto:no-reply@nobugescapes.com" class="icon-link" aria-label="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://github.com/bugbountyzip" class="icon-link" target="_blank" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+        <p style="color: var(--text-tertiary); font-size: 0.875rem;">
+            © 2024 BugBounty.Zip. Built with <i class="fas fa-heart" style="color: var(--danger-color);"></i> for security researchers.
+        </p>
+    </footer>
 
-window.onload = function() {
-    var savedClassList = localStorage.getItem('darkModeStatus');
-    let darkMode = localStorage.getItem('darkMode');
-
-    // Apply dark mode if it was previously enabled
-    if ((savedClassList && savedClassList.includes('dark-mode')) || (darkMode === 'enabled')) {
-        document.body.classList.add('dark-mode');
-    }
-};
-
-
-// On page load, check if dark mode was previously enabled
-    window.onload = function() {
-        let darkMode = localStorage.getItem('darkMode');
-
-        // Apply dark mode if it was previously enabled
-        if (darkMode === 'enabled') {
-            document.body.classList.add('dark-mode');
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
         }
-    };
 
-    function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (!navMenu.contains(event.target) && !mobileToggle.contains(event.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
 
-    // Save the current class list in localStorage.
-    localStorage.setItem('darkModeStatus', document.body.classList);
+        // Dark mode toggle with icon change
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                darkModeIcon.className = 'fas fa-moon';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                darkModeIcon.className = 'fas fa-sun';
+            }
+        }
 
-    // Store the current state in local storage
-    let darkMode = localStorage.getItem('darkMode');
-    if (darkMode !== 'enabled') {
-        localStorage.setItem('darkMode', 'enabled');
-    } else {
-        localStorage.setItem('darkMode', null);
-    }
-}
-
-	
-	
-</script>
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('darkModeIcon').className = 'fas fa-sun';
+            }
+        });
+    </script>
 </body>
 </html>
