@@ -1,119 +1,989 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boil Over - Root Domain Extractor</title>
+    
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0ZLYYNQ68Z"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0ZLYYNQ68Z');
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  gtag('config', 'G-0ZLYYNQ68Z');
-</script>
-<title>Boil Over</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://bugbounty.zip/css/styles.css">
-     <style>
-        .input-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-}
+        :root {
+            --primary-color: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f3f4f6;
+            --bg-tertiary: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --text-tertiary: #9ca3af;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --navbar-height: 60px;
+            --transition-fast: 150ms ease;
+            --transition-normal: 300ms ease;
+        }
 
-.input-group input, .input-group textarea {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
-    resize: none; 
-}
+        
+        [data-theme="dark"] {
+            --primary-color: #818cf8;
+            --primary-hover: #6366f1;
+            --secondary-color: #a78bfa;
+            --success-color: #34d399;
+            --danger-color: #f87171;
+            --warning-color: #fbbf24;
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: #334155;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
 
-.input-group button, .container button {
-    width: 100%;
-    padding: 10px 20px;
-    font-size: 16px;
-    margin-right: 10px;
-    margin-bottom: 20px;
-    border: none;
-    color: white;
-    background-color: #4CAF50;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px; 
-}
+        html {
+            height: 100%;
+            background-color: var(--bg-primary);
+            transition: background-color var(--transition-normal);
+        }
 
-.input-group button:hover, .container button:hover {
-    background-color: #0056b3;
-}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-normal);
+        }
 
-.input-group #keyword {
-    margin-top: 20px;
-    margin-bottom: 10px; 
-}
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--navbar-height);
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+            transition: all var(--transition-normal);
+        }
 
-@media (min-width: 768px) {
-    .input-group input, .input-group textarea, .input-group button, .container button {
-        width: 30%;
-    }
-}
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: auto;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-item a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-weight: 500;
+        }
+
+        .nav-item a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--bg-secondary);
+            min-width: 200px;
+            box-shadow: var(--shadow-xl);
+            border-radius: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-normal);
+            margin-top: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            border-radius: 0;
+        }
+
+        .dropdown-content a:first-child {
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        .dropdown-content a:last-child {
+            border-radius: 0 0 0.5rem 0.5rem;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--primary-color);
+        }
+
+        
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-left: auto;
+        }
+
+        
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: calc(var(--navbar-height) + 2rem) 1rem 2rem;
+        }
+
+        
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 0.5rem;
+            line-height: 1.8;
+        }
+
+        .sub-description {
+            font-size: 1rem;
+            color: var(--text-tertiary);
+            font-style: italic;
+        }
+
+        
+        .main-content {
+            display: grid;
+            gap: 2rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        
+        .textarea-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: all var(--transition-normal);
+            line-height: 1.5;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        
+        .process-button {
+            width: 100%;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            background: var(--primary-color);
+            color: white;
+            margin: 1.5rem 0;
+        }
+
+        .process-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: var(--primary-hover);
+        }
+
+        .process-button:active {
+            transform: translateY(0);
+        }
+
+        
+        .keyword-section {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin: 2rem 0;
+        }
+
+        .keyword-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+        }
+
+        .keyword-input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .keyword-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.5rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all var(--transition-fast);
+        }
+
+        .keyword-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .button.primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .button.primary:hover {
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
+            color: white;
+        }
+
+        .button.success {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+
+        .button.success:hover {
+            background: #059669;
+            border-color: #059669;
+            color: white;
+        }
+
+        
+        .stats-display {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin: 1.5rem 0;
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 1rem;
+            background: var(--bg-primary);
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-xl);
+            transition: all var(--transition-normal);
+            z-index: 100;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        
+        .footer {
+            background: var(--bg-secondary);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .icon-link {
+            color: var(--text-secondary);
+            font-size: 2rem;
+            transition: all var(--transition-fast);
+            display: inline-block;
+        }
+
+        .icon-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        
+        .alert {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-xl);
+            display: none;
+            animation: slideUp 0.3s ease;
+            z-index: 1001;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, 100%);
+            }
+            to {
+                transform: translate(-50%, 0);
+            }
+        }
+
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: var(--navbar-height);
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - var(--navbar-height));
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                transition: left var(--transition-normal);
+                box-shadow: var(--shadow-xl);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                margin-top: 0.5rem;
+                margin-left: 1rem;
+            }
+
+            .dark-mode-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .keyword-input-group {
+                flex-direction: column;
+            }
+
+            .keyword-input {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--bg-tertiary);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
-    <div class="navbar">
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/index.html" target="_blank">Home</a>
-  </div>
-  <div class="nav-item">
-    <div class="dropdown">
-      <a href="#">Tools</a>
-      <div class="dropdown-content">
-	    <a href="https://bugbounty.zip/RapidHand.html" target="_blank">Rapid-Hand</a>
-        <a href="https://bugbounty.zip/BoilOver.html" target="_blank">Boil Over</a>
-        <a href="https://bugbounty.zip/Hope.html" target="_blank">Hope</a>
-		<a href="https://bugbounty.zip/Evidence.html" target="_blank">Evidence</a>
-        <a href="https://bugbounty.zip/otp.html" target="_blank">OTP Generator</a>
-        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">UltraSoundScan</a>
-      </div>
+    
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="https://bugbounty.zip" class="nav-logo">
+                <i class="fas fa-bug"></i>
+                BugBounty.Zip
+            </a>
+            
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="nav-menu" id="navMenu">
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/index.html" target="_blank">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </div>
+                
+                <div class="nav-item dropdown">
+                    <a href="#">
+                        <i class="fas fa-tools"></i> Tools <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="https://bugbounty.zip/RapidHand.html" target="_blank">
+                            <i class="fas fa-hand-sparkles"></i> Rapid-Hand
+                        </a>
+                        <a href="https://bugbounty.zip/BoilOver.html" target="_blank">
+                            <i class="fas fa-fire"></i> Boil Over
+                        </a>
+                        <a href="https://bugbounty.zip/Hope.html" target="_blank">
+                            <i class="fas fa-dove"></i> Hope
+                        </a>
+                        <a href="https://bugbounty.zip/Evidence.html" target="_blank">
+                            <i class="fas fa-video"></i> Evidence
+                        </a>
+                        <a href="https://bugbounty.zip/otp.html" target="_blank">
+                            <i class="fas fa-key"></i> OTP Generator
+                        </a>
+                        <a href="https://bugbounty.zip/UltraSoundJS.html" target="_blank">
+                            <i class="fas fa-wave-square"></i> UltraSoundScan
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/About.html" target="_blank">
+                        <i class="fas fa-info-circle"></i> About
+                    </a>
+                </div>
+                
+                <div class="nav-item">
+                    <a href="https://bugbounty.zip/Patch.html" target="_blank">
+                        <i class="fas fa-clipboard-list"></i> Patch Notes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    
+    <div class="container">
+        
+        <div class="hero-section">
+            <h1 class="title">Boil Over</h1>
+            <p class="description">Your guiding light in the digital maze. Shed subdomains, let primary domains lead your way to digital success.</p>
+            <p class="sub-description">Extract the root domain from a list of URLs/Subdomains</p>
+        </div>
+
+        
+        <div class="main-content">
+            
+            <div class="textarea-wrapper">
+                <textarea id="inputURLs" placeholder="Enter your URLs here, separated by new lines...&#10;&#10;Example:&#10;https://app.example.com/path&#10;subdomain.test.com&#10;www.google.com"></textarea>
+            </div>
+
+            
+            <button class="process-button" onclick="extractDomains()">
+                <i class="fas fa-fire"></i>
+                <span>Get Root Domains</span>
+            </button>
+
+            
+            <div id="statsDisplay" class="stats-display">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalCount">0</div>
+                        <div class="stat-label">Total Processed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="uniqueCount">0</div>
+                        <div class="stat-label">Unique Domains</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="duplicateCount">0</div>
+                        <div class="stat-label">Duplicates Removed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="executionTime">0ms</div>
+                        <div class="stat-label">Processing Time</div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="textarea-wrapper">
+                <textarea id="outputDomains" placeholder="Your root domains will appear here..." readonly></textarea>
+            </div>
+
+            
+            <div class="keyword-section">
+                <h3><i class="fas fa-scissors"></i> Advanced Text Operations</h3>
+                <div class="keyword-input-group">
+                    <input type="text" id="keyword" class="keyword-input" placeholder="Enter keyword for trimming operations...">
+                </div>
+                <div class="button-grid">
+                    <button class="button" onclick="removeBefore()">
+                        <i class="fas fa-cut"></i> Remove Before Keyword
+                    </button>
+                    <button class="button" onclick="removeAfter()">
+                        <i class="fas fa-crop-alt"></i> Remove After Keyword
+                    </button>
+                    <button class="button primary" onclick="copyDomainsToClipboard()">
+                        <i class="fas fa-copy"></i> Copy to Clipboard
+                    </button>
+                    <button class="button success" onclick="downloadResults()">
+                        <i class="fas fa-download"></i> Download Results
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/About.html" target="_blank">About</a>
-  </div>
-  <div class="nav-item">
-    <a href="https://bugbounty.zip/Patch.html" target="_blank">Patch Notes</a>
-  </div>
-</div>
-<script>
-  // short  // dev.bugbounty.zip
-    (function(_0x110b3f,_0x4e065c){const _0x3ad8aa=a0_0x55b5,_0x1f2b17=_0x110b3f();while(!![]){try{const _0x2d0ba4=parseInt(_0x3ad8aa(0x214))/0x1*(-parseInt(_0x3ad8aa(0x1e9))/0x2)+-parseInt(_0x3ad8aa(0x1ff))/0x3*(parseInt(_0x3ad8aa(0x21b))/0x4)+-parseInt(_0x3ad8aa(0x1e6))/0x5*(parseInt(_0x3ad8aa(0x1f1))/0x6)+parseInt(_0x3ad8aa(0x21c))/0x7+-parseInt(_0x3ad8aa(0x1ec))/0x8*(-parseInt(_0x3ad8aa(0x1f9))/0x9)+parseInt(_0x3ad8aa(0x213))/0xa*(-parseInt(_0x3ad8aa(0x1dc))/0xb)+parseInt(_0x3ad8aa(0x1fd))/0xc*(parseInt(_0x3ad8aa(0x1f0))/0xd);if(_0x2d0ba4===_0x4e065c)break;else _0x1f2b17['push'](_0x1f2b17['shift']());}catch(_0x5b9337){_0x1f2b17['push'](_0x1f2b17['shift']());}}}(a0_0x59fc,0x1f10f));function a0_0x59fc(){const _0x2e939d=['then','net','190ENNnXv','3MDJGQn','qkQSs','ghISt','fun','cZggy','://','join','12268GgNKpX','1211497XnslOv','Domains\x20copied\x20to\x20clipboard!','123376BxZLvg','from','tNQRo','getElementById','toLowerCase','tech','MFzFl','website','AEXVr','cCaXj','484305EWdHfv','FSYOk','now','2278vyFLLX','uAOMV','CDLTJ','687368sFdUyh','\x20ms','xyz','\x0aUnique\x20Domains\x20Found:\x20','134446VBcBpp','6gwZdru','add','edu','CLxBA','split','inputURLs','aero','IpCmE','18qMHaiv','name','value','ViOPH','168teXOmJ','MmMzy','48ukewvG','nzHoX','Total\x20Domains\x20Found:\x20','Failed\x20to\x20copy\x20domains\x20to\x20clipboard','site','writeText','UiKBd','\x0aTime\x20Taken:\x20','length','GTnUx','outputDomains','slice','includes','space','FcRhf','mil','\x0aDuplicates:\x20','int'];a0_0x59fc=function(){return _0x2e939d;};return a0_0x59fc();}function a0_0x55b5(_0x403367,_0x73b4){const _0x59fcb0=a0_0x59fc();return a0_0x55b5=function(_0x55b5ee,_0x3e9750){_0x55b5ee=_0x55b5ee-0x1db;let _0x6e6018=_0x59fcb0[_0x55b5ee];return _0x6e6018;},a0_0x55b5(_0x403367,_0x73b4);}function extractDomains(){const _0x591f2f=a0_0x55b5,_0x2eb6d8={'UaQGT':_0x591f2f(0x1f6),'GTnUx':_0x591f2f(0x209),'cCIIz':'com','ViOPH':_0x591f2f(0x212),'QwvkG':_0x591f2f(0x1f3),'FSYOk':_0x591f2f(0x20e),'CDLTJ':'info','GctGk':_0x591f2f(0x1fa),'ghISt':'museum','FcRhf':'coop','YDsOQ':_0x591f2f(0x1f7),'nzHoX':_0x591f2f(0x1ee),'cZggy':'online','IpCmE':_0x591f2f(0x203),'orGuY':_0x591f2f(0x1e1),'cCaXj':_0x591f2f(0x20c),'wtRpZ':'store','MFzFl':_0x591f2f(0x217),'AEXVr':_0x591f2f(0x1e3),'CLxBA':'press','MmMzy':function(_0x43f6ce,_0x581aa7){return _0x43f6ce>_0x581aa7;},'UiKBd':_0x591f2f(0x219),'bmOZs':function(_0x483881,_0x5b6cf7){return _0x483881-_0x5b6cf7;}};let _0x4b8c8c=performance[_0x591f2f(0x1e8)]();const _0x4b92ad=document[_0x591f2f(0x1df)](_0x2eb6d8['UaQGT'])['value'][_0x591f2f(0x1f5)]('\x0a'),_0x42ade4=document['getElementById'](_0x2eb6d8[_0x591f2f(0x208)]);let _0x1f6e8a=new Set(),_0x274637=new Set();const _0x157b08=[_0x2eb6d8['cCIIz'],_0x2eb6d8[_0x591f2f(0x1fc)],'org','gov',_0x2eb6d8['QwvkG'],_0x591f2f(0x210),_0x2eb6d8[_0x591f2f(0x1e7)],'app','io','co','de','es','in','ch','ai'],_0x3c289d=['me',_0x2eb6d8[_0x591f2f(0x1eb)],_0x2eb6d8['GctGk'],_0x2eb6d8[_0x591f2f(0x216)],_0x2eb6d8[_0x591f2f(0x20d)],_0x2eb6d8['YDsOQ'],_0x2eb6d8[_0x591f2f(0x200)],_0x2eb6d8[_0x591f2f(0x218)],_0x2eb6d8[_0x591f2f(0x1f8)],_0x2eb6d8['orGuY'],_0x2eb6d8[_0x591f2f(0x1e5)],_0x2eb6d8['wtRpZ'],_0x2eb6d8[_0x591f2f(0x1e2)],_0x2eb6d8[_0x591f2f(0x1e4)],_0x2eb6d8[_0x591f2f(0x1f4)],'icu'];for(let _0x2a035c of _0x4b92ad){_0x2a035c=_0x2a035c['trim']();let _0x36ae7b;_0x2eb6d8[_0x591f2f(0x1fe)](_0x2a035c['indexOf'](_0x2eb6d8[_0x591f2f(0x205)]),-0x1)?_0x36ae7b=_0x2a035c[_0x591f2f(0x1f5)]('/')[0x2]:_0x36ae7b=_0x2a035c[_0x591f2f(0x1f5)]('/')[0x0];_0x36ae7b=_0x36ae7b[_0x591f2f(0x1f5)](':')[0x0],_0x36ae7b=_0x36ae7b[_0x591f2f(0x1f5)]('?')[0x0];let _0x1fd827=_0x36ae7b[_0x591f2f(0x1f5)]('.'),_0x7494ec=_0x1fd827[_0x591f2f(0x207)];if(_0x157b08[_0x591f2f(0x20b)](_0x1fd827[_0x591f2f(0x20a)](-0x2)['join']('.')))_0x36ae7b=_0x1fd827[_0x591f2f(0x20a)](-0x3)['join']('.');else{if(_0x3c289d['includes'](_0x1fd827[_0x7494ec-0x1]))_0x36ae7b=_0x1fd827[_0x591f2f(0x20a)](-0x2)['join']('.');else _0x157b08[_0x591f2f(0x20b)](_0x1fd827[_0x7494ec-0x2])?_0x36ae7b=_0x1fd827[_0x591f2f(0x20a)](-0x2)['join']('.'):_0x36ae7b=_0x1fd827[_0x591f2f(0x20a)](-0x2)['join']('.');}_0x1f6e8a[_0x591f2f(0x1f2)](_0x36ae7b[_0x591f2f(0x1e0)]());}_0x42ade4[_0x591f2f(0x1fb)]=Array[_0x591f2f(0x1dd)](_0x1f6e8a)[_0x591f2f(0x21a)]('\x0a');let _0x5397e7=performance[_0x591f2f(0x1e8)](),_0x570d40=_0x4b92ad[_0x591f2f(0x207)],_0x89cb3=_0x1f6e8a['size'],_0x15fc1d=_0x2eb6d8['bmOZs'](_0x570d40,_0x89cb3),_0x437c9a=(_0x5397e7-_0x4b8c8c)['toFixed'](0x2),_0x55fdb7=_0x591f2f(0x201)+_0x570d40+_0x591f2f(0x1ef)+_0x89cb3+_0x591f2f(0x20f)+_0x15fc1d+_0x591f2f(0x206)+_0x437c9a+_0x591f2f(0x1ed);alert(_0x55fdb7);}function copyDomainsToClipboard(){const _0x1bd8e7=a0_0x55b5,_0x5d8662={'tNQRo':function(_0x499bc8,_0x51130c){return _0x499bc8(_0x51130c);},'uAOMV':_0x1bd8e7(0x1db),'qkQSs':function(_0x5581f9,_0x4fe120){return _0x5581f9(_0x4fe120);},'sWqdG':'outputDomains'},_0x161e95=document['getElementById'](_0x5d8662['sWqdG']);navigator['clipboard'][_0x1bd8e7(0x204)](_0x161e95[_0x1bd8e7(0x1fb)])[_0x1bd8e7(0x211)](function(){const _0x50eacb=_0x1bd8e7;_0x5d8662[_0x50eacb(0x1de)](alert,_0x5d8662[_0x50eacb(0x1ea)]);},function(){const _0x473795=_0x1bd8e7;_0x5d8662[_0x473795(0x215)](alert,_0x473795(0x202));});}
-</script>
 
+    
+    <div id="alert" class="alert"></div>
 
-<div class="container">
-    <div class="title">Boil Over</div>
-    <div class="description">"Boil Over BETA" - your guiding light in the digital maze. Shed subdomains, let primary domains lead your way to digital success.</div>
-    <div class="description">Extract the root domain from a list of URLs/Subdomains</div>
-    <div class="input-group">
-        <textarea id="inputURLs" placeholder="Enter your URLs here, separated by new lines..." style="width: 100%; height: 100px;"></textarea>
-        <button onclick="extractDomains()">Get Root Domains</button>
-        <textarea id="outputDomains" placeholder="Your root domains will appear here..." style="width: 100%; height: 100px;"></textarea>
-        <button onclick="copyDomainsToClipboard()">Copy to Clipboard</button>
-    </div>
-</div>
+    
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">
+        <i class="fas fa-moon" id="darkModeIcon"></i>
+    </button>
 
-	<div class="footer">
-  <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank">
-    <i class="fab fa-twitter-square"></i>
-  </a>
-  <a href="mailto:no-reply@nobugescapes.com" class="icon-link">
-    <i class="fas fa-envelope-square"></i>
-  </a>
-</div>
-<script src="https://bugbounty.zip/js/darkmode.js"></script>
+    
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="https://twitter.com/Tur24Tur" class="icon-link" target="_blank" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="mailto:no-reply@nobugescapes.com" class="icon-link" aria-label="Email">
+                <i class="fas fa-envelope"></i>
+            </a>
+            <a href="https://github.com" class="icon-link" target="_blank" aria-label="GitHub">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+        <p style="color: var(--text-tertiary); font-size: 0.875rem;">
+            © 2024 BugBounty.Zip. Built with <i class="fas fa-heart" style="color: var(--danger-color);"></i> for security researchers.
+        </p>
+    </footer>
+
+    <script>
+
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const mobileToggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (!navMenu.contains(event.target) && !mobileToggle.contains(event.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const darkModeIcon = document.getElementById('darkModeIcon');
+            
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'light');
+                darkModeIcon.className = 'fas fa-moon';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                darkModeIcon.className = 'fas fa-sun';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('darkModeIcon').className = 'fas fa-sun';
+            }
+        });
+
+        function showAlert(message, duration = 3000) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, duration);
+        }
+
+        function extractDomains() {
+            const button = document.querySelector('.process-button');
+            const originalContent = button.innerHTML;
+            button.innerHTML = '<span class="loading"></span> Processing...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                let startTime = performance.now();
+                const inputURLs = document.getElementById('inputURLs').value.split('\n');
+                const outputDomains = document.getElementById('outputDomains');
+
+                let domains = new Set();
+                let unidentifiedDomains = new Set();
+                const specificTlds = ["com", "net", "org", "gov", "edu", "int", "mil", "app", "io", "co", "uk", "de", "fr", "jp", "cn", "au", "br", "in", "ru", "info", "biz", "xyz", "online", "site", "tech", "store", "dev", "ai"];
+                
+                for (let url of inputURLs) {
+                    url = url.trim();
+                    if (!url) continue;
+                    
+                    let domain;
+
+                    if (url.indexOf("://") > -1) {
+                        domain = url.split('/')[2];
+                    } else {
+                        domain = url.split('/')[0];
+                    }
+
+                    domain = domain.split(':')[0];
+
+                    domain = domain.split('?')[0];
+
+                    let splitArr = domain.split('.');
+                    let arrLen = splitArr.length;
+
+                    let found = false;
+                    for (let tld of specificTlds) {
+                        let tldIndex = splitArr.indexOf(tld);
+                        if (tldIndex !== -1 && tldIndex > 0) {
+                            domain = splitArr[tldIndex - 1] + '.' + tld;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        unidentifiedDomains.add(domain.toLowerCase());
+                    }
+                    
+                    domains.add(domain.toLowerCase());
+                }
+
+                
+                outputDomains.value = Array.from(domains).join('\n');
+
+                let endTime = performance.now();
+                let executionTime = endTime - startTime;
+
+                
+                let totalDomains = inputURLs.filter(url => url.trim() !== '').length;
+                let uniqueDomains = domains.size;
+                let duplicates = totalDomains - uniqueDomains;
+                let unidentifiedCount = unidentifiedDomains.size;
+
+                // Display stats
+                document.getElementById('statsDisplay').style.display = 'block';
+                document.getElementById('totalCount').textContent = totalDomains;
+                document.getElementById('uniqueCount').textContent = uniqueDomains;
+                document.getElementById('duplicateCount').textContent = duplicates;
+                document.getElementById('executionTime').textContent = executionTime.toFixed(2) + 'ms';
+
+                // Reset button
+                button.innerHTML = originalContent;
+                button.disabled = false;
+
+                // Show completion message
+                if (unidentifiedCount > 0) {
+                    showAlert(`Processing complete! Found ${unidentifiedCount} domains that may need manual adjustment. Use the Remove Before/After buttons if needed.`, 5000);
+                } else {
+                    showAlert('Processing complete! All domains extracted successfully.');
+                }
+            }, 100);
+        }
+
+        function removeBefore() {
+            const keyword = document.getElementById('keyword').value;
+            if (!keyword) {
+                showAlert('Please enter a keyword first!');
+                return;
+            }
+            
+            const inputURLs = document.getElementById('outputDomains').value.split('\n');
+
+            let domains = inputURLs.map(url => {
+                let index = url.indexOf(keyword);
+                return (index !== -1) ? url.substring(index) : url;
+            });
+
+            // Updating the output area
+            document.getElementById('outputDomains').value = domains.join('\n');
+            showAlert(`Removed text before "${keyword}"`);
+        }
+
+        function removeAfter() {
+            const keyword = document.getElementById('keyword').value;
+            if (!keyword) {
+                showAlert('Please enter a keyword first!');
+                return;
+            }
+            
+            const inputURLs = document.getElementById('outputDomains').value.split('\n');
+
+            let domains = inputURLs.map(url => {
+                let index = url.indexOf(keyword);
+                return (index !== -1) ? url.substring(0, index + keyword.length) : url;
+            });
+
+            
+            document.getElementById('outputDomains').value = domains.join('\n');
+            showAlert(`Removed text after "${keyword}"`);
+        }
+
+        function copyDomainsToClipboard() {
+            const outputDomains = document.getElementById('outputDomains');
+            if (!outputDomains.value) {
+                showAlert('Nothing to copy!');
+                return;
+            }
+            
+            outputDomains.select();
+            document.execCommand('copy');
+            
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(outputDomains.value)
+                    .then(() => showAlert('Domains copied to clipboard!'))
+                    .catch(() => showAlert('Failed to copy domains'));
+            } else {
+                showAlert('Domains copied to clipboard!');
+            }
+        }
+
+        function downloadResults() {
+            const outputDomains = document.getElementById('outputDomains');
+            if (!outputDomains.value) {
+                showAlert('Nothing to download!');
+                return;
+            }
+            
+            const blob = new Blob([outputDomains.value], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `root_domains_${new Date().toISOString().slice(0, 10)}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            showAlert('File downloaded successfully!');
+        }
+    </script>
 </body>
-
 </html>
