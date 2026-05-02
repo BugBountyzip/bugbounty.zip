@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code on Android - Setup Guide</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    padding: 2rem;
+  }
+  .container { max-width: 860px; margin: 0 auto; }
+  h1 {
+    font-size: 2.2rem;
+    color: #f0f6fc;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid #e8967d;
+    padding-bottom: 0.8rem;
+  }
+  .subtitle {
+    color: #8b949e;
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+  }
+  h2 {
+    font-size: 1.4rem;
+    color: #e8967d;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .step-num {
+    background: #e8967d;
+    color: #0d1117;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+  p { margin-bottom: 1rem; color: #c9d1d9; }
+  .warn {
+    background: #1c1206;
+    border-left: 4px solid #d29922;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+    color: #d29922;
+    font-size: 0.95rem;
+  }
+  .info {
+    background: #0c1929;
+    border-left: 4px solid #58a6ff;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+    color: #79c0ff;
+    font-size: 0.95rem;
+  }
+  .success {
+    background: #0d1a0d;
+    border-left: 4px solid #3fb950;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+    color: #56d364;
+    font-size: 0.95rem;
+  }
+  pre {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 0.8rem 0 1.2rem 0;
+    overflow-x: auto;
+    position: relative;
+  }
+  code {
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.9rem;
+    color: #e6edf3;
+  }
+  .cmd { color: #79c0ff; }
+  .comment { color: #8b949e; }
+  .output { color: #7ee787; }
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #30363d;
+    border: 1px solid #484f58;
+    color: #c9d1d9;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.75rem;
+  }
+  .copy-btn:hover { background: #484f58; }
+  .copy-btn.copied { color: #3fb950; border-color: #3fb950; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  th, td {
+    padding: 0.6rem 1rem;
+    text-align: left;
+    border: 1px solid #30363d;
+  }
+  th { background: #161b22; color: #e8967d; }
+  td { color: #c9d1d9; }
+  td code { background: #1c2128; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+  .requirements {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .req-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .req-card h3 { color: #f0f6fc; font-size: 1rem; margin-bottom: 0.4rem; }
+  .req-card p { color: #8b949e; font-size: 0.9rem; margin: 0; }
+  .divider { border: none; border-top: 1px solid #21262d; margin: 2.5rem 0; }
+  .footer {
+    text-align: center;
+    color: #484f58;
+    font-size: 0.85rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #21262d;
+  }
+  .arch-diagram {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    text-align: center;
+    font-family: 'Cascadia Code', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #8b949e;
+  }
+  .arch-diagram .layer {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 0.5rem 1.5rem;
+    margin: 0.4rem auto;
+    display: inline-block;
+    min-width: 280px;
+  }
+  .arch-diagram .layer.active { border-color: #e8967d; color: #e8967d; }
+  .arch-diagram .arrow { color: #484f58; font-size: 1.2rem; }
+  @media (max-width: 600px) {
+    body { padding: 1rem; }
+    h1 { font-size: 1.6rem; }
+    .requirements { grid-template-columns: 1fr; }
+    pre { padding: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Claude Code on Android</h1>
+<p class="subtitle">Run Claude Code on a non-rooted Android phone via Termux + proot-distro Ubuntu. No root, no VM, no emulator.</p>
+
+<div class="arch-diagram">
+  <div class="layer">Your Laptop (SSH client)</div>
+  <div><span class="arrow">|</span></div>
+  <div class="layer">Termux (Android terminal emulator)</div>
+  <div><span class="arrow">|</span></div>
+  <div class="layer">proot-distro (Ubuntu ARM64)</div>
+  <div><span class="arrow">|</span></div>
+  <div class="layer active">Claude Code v2.1.126</div>
+</div>
+
+<hr class="divider">
+
+<div class="requirements">
+  <div class="req-card">
+    <h3>Requirements</h3>
+    <p>Android phone with USB debugging enabled. No root needed.</p>
+  </div>
+  <div class="req-card">
+    <h3>Tested On</h3>
+    <p>Samsung Galaxy Z Fold3 (SM-F926B), Android 13, 12GB RAM</p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<h2><span class="step-num">1</span> Install Termux</h2>
+<p>Install Termux from <strong>F-Droid</strong> (not the Play Store - that version is outdated and broken).</p>
+<p>If you have ADB access, you can install it from your PC:</p>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="comment"># Download from F-Droid</span>
+<span class="cmd">curl -sL "https://f-droid.org/repo/com.termux_118.apk" -o termux.apk</span>
+
+<span class="comment"># Install via ADB</span>
+<span class="cmd">adb install termux.apk</span></code></pre>
+<div class="warn">Do NOT install Termux from Google Play Store. It is abandoned and will not work.</div>
+
+<h2><span class="step-num">2</span> Open Termux and Update Packages</h2>
+<p>Open the Termux app on your phone. You'll see a terminal. Run:</p>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="cmd">pkg update -y && pkg upgrade -y</span></code></pre>
+<p>It will ask about config file updates during the process. Just press <strong>Enter</strong> to accept defaults each time.</p>
+
+<h2><span class="step-num">3</span> Install proot-distro</h2>
+<p>proot-distro lets you run a full Linux distribution (Ubuntu) inside Termux without root.</p>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="cmd">pkg install proot-distro -y</span></code></pre>
+
+<h2><span class="step-num">4</span> Install Ubuntu</h2>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="cmd">proot-distro install ubuntu</span></code></pre>
+<p>This downloads and extracts Ubuntu ARM64. Takes about 2-3 minutes.</p>
+
+<h2><span class="step-num">5</span> Log into Ubuntu and Set Up</h2>
+<p>First, log in as root to install packages and create your user:</p>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="comment"># Enter Ubuntu</span>
+<span class="cmd">proot-distro login ubuntu</span>
+
+<span class="comment"># Update Ubuntu</span>
+<span class="cmd">apt update && apt upgrade -y</span>
+
+<span class="comment"># Install Node.js, Python, git</span>
+<span class="cmd">apt install -y nodejs npm git curl python3 python3-pip</span></code></pre>
+
+<h2><span class="step-num">6</span> Install Claude Code</h2>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="cmd">npm install -g @anthropic-ai/claude-code</span>
+
+<span class="comment"># Verify</span>
+<span class="cmd">claude --version</span>
+<span class="output"># 2.1.126 (Claude Code)</span></code></pre>
+
+<h2><span class="step-num">7</span> Create a Non-Root User</h2>
+<p>Claude Code blocks <code>--dangerously-skip-permissions</code> when running as root. Create a regular user:</p>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="comment"># Still inside Ubuntu as root</span>
+<span class="cmd">useradd -m -s /bin/bash android</span>
+
+<span class="comment"># Add ~/.local/bin to PATH for the user</span>
+<span class="cmd">echo 'export PATH="$HOME/.local/bin:$PATH"' >> /home/android/.bashrc</span>
+
+<span class="comment"># Exit root</span>
+<span class="cmd">exit</span></code></pre>
+<p>From now on, log into Ubuntu with:</p>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="cmd">proot-distro login ubuntu --user android</span></code></pre>
+
+<h2><span class="step-num">8</span> Authenticate Claude Code</h2>
+<p>Launch Claude Code and follow the login prompts:</p>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="cmd">claude</span></code></pre>
+<p>It will open a browser or give you a URL to authenticate with your Anthropic account.</p>
+<div class="info">Alternatively, if you have an existing <code>~/.claude/.credentials.json</code> from another machine, you can copy it to <code>/home/android/.claude/.credentials.json</code> inside the Ubuntu environment.</div>
+
+<h2><span class="step-num">9</span> Configure Claude Code (Optional)</h2>
+<p>Create a settings file for your preferences:</p>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="cmd">mkdir -p ~/.claude</span>
+<span class="cmd">cat > ~/.claude/settings.json << 'EOF'</span>
+{
+  "env": {
+    "DISABLE_TELEMETRY": "1",
+    "DISABLE_AUTOUPDATER": "1"
+  },
+  "permissions": {
+    "allow": [],
+    "deny": []
+  },
+  "effortLevel": "high",
+  "showThinkingSummaries": true
+}
+<span class="cmd">EOF</span></code></pre>
+
+<hr class="divider">
+
+<h2><span class="step-num">10</span> Set Up SSH (Access from Laptop)</h2>
+<p>This lets you SSH into the phone from your laptop and run Claude Code remotely.</p>
+
+<h3 style="color:#f0f6fc; margin: 1rem 0 0.5rem;">On the phone (in Termux, not Ubuntu):</h3>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="comment"># Exit Ubuntu first if you're inside it</span>
+<span class="cmd">exit</span>
+
+<span class="comment"># Install SSH server</span>
+<span class="cmd">pkg install openssh -y</span>
+
+<span class="comment"># Set a password</span>
+<span class="cmd">passwd</span>
+
+<span class="comment"># Start SSH server</span>
+<span class="cmd">sshd</span>
+
+<span class="comment"># Find your phone's IP</span>
+<span class="cmd">ifconfig wlan0 | grep inet</span></code></pre>
+
+<div class="info">Termux SSH runs on port <strong>8022</strong> (not 22). Your username is shown by running <code>whoami</code> (e.g., <code>u0_a271</code>).</div>
+
+<h3 style="color:#f0f6fc; margin: 1rem 0 0.5rem;">On your laptop:</h3>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="comment"># Connect to the phone</span>
+<span class="cmd">ssh -p 8022 u0_a271@&lt;PHONE_IP&gt;</span>
+
+<span class="comment"># Enter your password, then launch Ubuntu + Claude Code</span>
+<span class="cmd">proot-distro login ubuntu --user android</span>
+<span class="cmd">claude</span></code></pre>
+
+<h3 style="color:#f0f6fc; margin: 1rem 0 0.5rem;">Set up SSH key auth (no password needed):</h3>
+<pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code><span class="comment"># On your laptop - generate a key</span>
+<span class="cmd">ssh-keygen -t ed25519 -f ~/.ssh/termux_phone -N ""</span>
+
+<span class="comment"># Copy it to the phone</span>
+<span class="cmd">ssh-copy-id -p 8022 -i ~/.ssh/termux_phone u0_a271@&lt;PHONE_IP&gt;</span>
+
+<span class="comment"># Now connect without password</span>
+<span class="cmd">ssh -i ~/.ssh/termux_phone -p 8022 u0_a271@&lt;PHONE_IP&gt;</span></code></pre>
+
+<hr class="divider">
+
+<h2>Quick Reference</h2>
+<table>
+  <tr><th>Action</th><th>Command</th></tr>
+  <tr><td>Open Ubuntu</td><td><code>proot-distro login ubuntu --user android</code></td></tr>
+  <tr><td>Start Claude Code</td><td><code>claude</code></td></tr>
+  <tr><td>Start SSH server</td><td><code>sshd</code> (in Termux, not Ubuntu)</td></tr>
+  <tr><td>Find phone IP</td><td><code>ifconfig wlan0</code> (in Termux)</td></tr>
+  <tr><td>SSH from laptop</td><td><code>ssh -p 8022 u0_a271@&lt;IP&gt;</code></td></tr>
+  <tr><td>SSH + Ubuntu one-liner</td><td><code>ssh -p 8022 u0_a271@&lt;IP&gt; -t "proot-distro login ubuntu --user android"</code></td></tr>
+  <tr><td>Stop SSH server</td><td><code>pkill sshd</code></td></tr>
+  <tr><td>Check Claude version</td><td><code>claude --version</code></td></tr>
+  <tr><td>Update Claude Code</td><td><code>npm update -g @anthropic-ai/claude-code</code></td></tr>
+</table>
+
+<hr class="divider">
+
+<h2>Troubleshooting</h2>
+
+<p><strong>Claude Code says "cannot be used with root/sudo"</strong></p>
+<p>You're logged in as root. Use <code>proot-distro login ubuntu --user android</code> instead.</p>
+
+<p><strong>SSH connection refused</strong></p>
+<p>Make sure you're using port <code>8022</code>, not the default 22. Also ensure <code>sshd</code> is running in Termux.</p>
+
+<p><strong>"~/.local/bin is not in your PATH" warning</strong></p>
+<p>Run: <code>echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc</code></p>
+
+<p><strong>Phone IP changed</strong></p>
+<p>The WiFi IP changes when reconnecting. Check the new IP with <code>ifconfig wlan0</code> in Termux, or via ADB: <code>adb shell ip addr show wlan0</code></p>
+
+<p><strong>proot warning: can't sanitize binding</strong></p>
+<p>Harmless. This is normal proot behavior, ignore it.</p>
+
+<p><strong>dbus errors during apt upgrade</strong></p>
+<p>Normal in proot. dbus doesn't run in a proot container, but nothing depends on it.</p>
+
+<p><strong>Lag / slow command execution</strong></p>
+<p>proot uses ptrace to emulate root, which adds overhead to every system call. This is the tradeoff for not needing real root. It's usable but not as fast as native Linux.</p>
+
+<div class="footer">
+  No root required. Tested on Samsung Galaxy Z Fold3 (SM-F926B), Android 13, 12GB RAM.<br>
+  Claude Code v2.1.126 running on Ubuntu ARM64 via Termux proot-distro.
+</div>
+
+</div>
+
+<script>
+function copyCode(btn) {
+  const pre = btn.parentElement;
+  const code = pre.querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
