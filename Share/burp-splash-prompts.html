@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Burp Suite Custom Splash Screen</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    padding: 2rem;
+  }
+  .container { max-width: 860px; margin: 0 auto; }
+  h1 {
+    font-size: 2.2rem;
+    color: #f0f6fc;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid #FF6633;
+    padding-bottom: 0.8rem;
+  }
+  .subtitle {
+    color: #8b949e;
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+  }
+  h2 {
+    font-size: 1.4rem;
+    color: #FF6633;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .prompt-num {
+    background: #FF6633;
+    color: #0d1117;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+  p { margin-bottom: 1rem; color: #c9d1d9; }
+  .info {
+    background: #0c1929;
+    border-left: 4px solid #58a6ff;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+    color: #79c0ff;
+    font-size: 0.95rem;
+  }
+  .warn {
+    background: #1c1206;
+    border-left: 4px solid #d29922;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+    color: #d29922;
+    font-size: 0.95rem;
+  }
+  .success {
+    background: #0d1a0d;
+    border-left: 4px solid #3fb950;
+    padding: 0.8rem 1rem;
+    margin: 1rem 0;
+    border-radius: 0 6px 6px 0;
+    color: #56d364;
+    font-size: 0.95rem;
+  }
+  pre {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    margin: 0.8rem 0 1.2rem 0;
+    overflow-x: auto;
+    position: relative;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  code {
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.9rem;
+    color: #e6edf3;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #30363d;
+    border: 1px solid #484f58;
+    color: #c9d1d9;
+    padding: 4px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.75rem;
+  }
+  .copy-btn:hover { background: #484f58; }
+  .copy-btn.copied { color: #3fb950; border-color: #3fb950; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  th, td {
+    padding: 0.6rem 1rem;
+    text-align: left;
+    border: 1px solid #30363d;
+  }
+  th { background: #161b22; color: #FF6633; }
+  td { color: #c9d1d9; }
+  td code { background: #1c2128; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+  .divider { border: none; border-top: 1px solid #21262d; margin: 2.5rem 0; }
+  .footer {
+    text-align: center;
+    color: #484f58;
+    font-size: 0.85rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #21262d;
+  }
+  .prompt-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1.2rem;
+    margin: 1rem 0 2rem 0;
+  }
+  .prompt-card .tag {
+    display: inline-block;
+    background: #FF6633;
+    color: #0d1117;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 0.8rem;
+  }
+  .prompt-card .desc {
+    color: #8b949e;
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+  .specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+  .spec-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .spec-card h3 { color: #f0f6fc; font-size: 1rem; margin-bottom: 0.4rem; }
+  .spec-card p { color: #8b949e; font-size: 0.9rem; margin: 0; }
+  @media (max-width: 600px) {
+    body { padding: 1rem; }
+    h1 { font-size: 1.6rem; }
+    .specs { grid-template-columns: 1fr; }
+    pre { padding: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Burp Suite Custom Splash Screen</h1>
+<p class="subtitle">Replace Burp Suite's splash screen with a custom AI-generated design. This was tested on Windows, results may vary on macOS/Linux.</p>
+
+<div class="specs">
+  <div class="spec-card">
+    <h3>How It Works</h3>
+    <p>The splash PNG is embedded inside BurpSuite.exe. The offset varies between Burp versions but can be auto-detected by scanning for the PNG header. Resize to 912x510, compress under 183KB, patch the bytes, restart Burp.</p>
+  </div>
+  <div class="spec-card">
+    <h3>Image Requirements</h3>
+    <p>912x510 pixels, RGBA PNG, under 186,864 bytes (~183KB) compressed. Dark navy (#111a2e) base with orange (#FF6633) accents.</p>
+  </div>
+</div>
+
+<hr class="divider">
+
+<h2>Technical Details</h2>
+
+<table>
+  <tr><th>Property</th><th>Value</th></tr>
+  <tr><td>Target</td><td>Burp Suite binary</td></tr>
+  <tr><td>Splash offset</td><td>Varies per version (auto-detected by scanning for PNG header)</td></tr>
+  <tr><td>Slot size</td><td><code>186,864 bytes</code> (~183KB)</td></tr>
+  <tr><td>Image dimensions</td><td><code>912 x 510</code> pixels</td></tr>
+  <tr><td>Format</td><td>PNG, RGBA</td></tr>
+  <tr><td>Prompt canvas</td><td><code>1536 x 1024</code> (resized by tool)</td></tr>
+</table>
+
+<div class="info">All prompts generate at 1536x1024. Resize to 912x510 and compress with pngquant to fit the EXE slot.</div>
+
+<div class="success">The splash PNG can be located by searching for the PNG header bytes <code>89 50 4E 47 0D 0A 1A 0A</code> inside the binary. Look for the 912x510 PNG (the 1x version). On the version tested, it was found at offset <code>0x770E8</code>. In HxD: Ctrl+G, type <code>770E8</code>, and you'll land right on it.</div>
+
+<hr class="divider">
+
+<div class="warn">The prompt below rarely produces a perfect image on the first try. Expect a few follow-up messages to ChatGPT to fix the logo placement, text rendering, edge transparency, or color balance. You can also use Claude to brainstorm new scene ideas or refine your prompt before generating.</div>
+
+<div style="margin: 1.5rem 0; border-radius: 8px; overflow: hidden; border: 1px solid #30363d;">
+  <img src="https://raw.githubusercontent.com/BugBountyzip/bugbounty.zip/main/Share/img/High.png" alt="The Watchtower - Custom Burp Suite Splash Screen" style="width: 100%; height: auto; display: block;">
+</div>
+
+<h2>The Watchtower</h2>
+<div class="prompt-card">
+  <p class="desc">A lone figure on a server tower overlooking a dark cyber city.</p>
+  <pre><button class="copy-btn" onclick="copyCode(this)">Copy</button><code>Create an illustration for a software splash screen.
+
+Canvas: 1536x1024 pixels. PNG with real alpha transparency.
+
+SCENE: A lone hooded figure in a dark cloak standing on top of a server rack tower, overlooking a vast dark cityscape made of network infrastructure and buildings. The figure holds a glowing orange lantern with a lightning bolt symbol inside it, arm extended outward. The lantern light reveals the city below. The city streets are glowing orange data streams and network connection lines flowing between dark buildings. Orange glowing lights dot the buildings like windows. Dark spires and antenna towers in the background. Network cables hanging from the server rack the figure stands on.
+
+STYLE:
+- Dark navy (#111a2e) as the dominant base color
+- Orange/amber (#ff6a00) as the ONLY accent color
+- No other colors - everything is dark navy, black, or orange
+- Professional digital illustration
+- Atmospheric, moody, cinematic
+- The character is positioned center-right within the shape
+
+SHAPE AND TRANSPARENCY:
+- LEFT edge: straight, clean, solid dark navy
+- BOTTOM edge: straight, clean, solid dark navy
+- RIGHT side: rough, torn, painterly brush strokes fading into full transparency
+- TOP side: rough, jagged paint splatters fading into full transparency
+- About 20-25% of canvas is fully transparent (alpha=0)
+
+TEXT AND LOGO (blend naturally into the scene):
+- The bottom-left area of the scene should naturally be dark and empty (deep shadow, no buildings or detail)
+- Place an orange lightning bolt icon and "Burp Suite" in white bold text in this dark area
+- The text should feel like part of the artwork, not a separate box or overlay
+- NO version number, NO other text anywhere</code></pre>
+</div>
+
+
+
+<hr class="divider">
+
+<div class="footer">
+  All prompts designed for use with ChatGPT image generator.<br>
+  Splash screen tool auto-handles resize, compression, and EXE patching.
+</div>
+
+</div>
+
+<script>
+function copyCode(btn) {
+  const pre = btn.parentElement;
+  const code = pre.querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
